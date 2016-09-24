@@ -8,7 +8,7 @@ exports.measureParticipants = function(messages, members) {
       return member['user_id'] === element['sender_id']
     })]
     currMember.count = (currMember.count === undefined ||
-      currMember.count === null) ? 0 : currMember.count + 1 
+      currMember.count === null) ? 0 : currMember.count + 1
   })
   return members
 }
@@ -29,7 +29,7 @@ exports.findLovers = function(messages, members) {
     })
   })
   //compare messages for each member, make adj list for convos between users
-  let numConversations = new Object() 
+  let numConversations = new Object()
   members.forEach((member) => {
     members.forEach((secondMember) => {
       if (member !== secondMember) {
@@ -44,15 +44,35 @@ exports.findLovers = function(messages, members) {
       }
     })
   })
-  return numConversations
+  // find the largest element in numConversations for lovers
+  let max = -1
+  let maxKey = ''
+  Object.keys(numConversations).forEach((key) => {
+    const curr = numConversations[key]
+    if (max < curr) {
+      max = curr
+      maxKey = key
+    }
+  })
+  const userId1 = maxKey.substring(0, maxKey.length / 2)
+  const userId2 = maxKey.substring(maxKey.length / 2)
+  return [{
+    user_id: userId1,
+    name: members.find((member) => member.user_id === userId1).nickname,
+    img: members.find((member) => member.user_id === userId1).image_url
+  }, {
+    user_id: userId2,
+    name: members.find((member) => member.user_id === userId2).nickname,
+    img: members.find((member) => member.user_id === userId2).image_url
+  }]
 }
 
 function countChats(firstChat, secondChat) {
   if (!firstChat || !secondChat) {
-    return 0 
+    return 0
   }
-  let i = firstChat.length - 1 
-  let j = secondChat.length - 1 
+  let i = firstChat.length - 1
+  let j = secondChat.length - 1
   let count = 0
   while (j > 0 && i > 0) {
     let diff = firstChat[i] - secondChat[j]
