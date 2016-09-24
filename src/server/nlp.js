@@ -4,11 +4,14 @@ const moment = require('moment')
 
 exports.measureParticipants = function(messages, members) {
   messages.forEach((element) => {
-    const currMember = members[members.findIndex((member) => {
-      return member['user_id'] === element['sender_id']
-    })]
-    currMember.count = (currMember.count === undefined ||
-      currMember.count === null) ? 0 : currMember.count + 1
+    if (!isNaN(element['sender_id'])) {
+      const currMember = members[members.findIndex((member) => {
+        console.log(member)
+        return member['user_id'] === element['sender_id']
+      })]
+      currMember.count = (currMember.count === undefined ||
+        currMember.count === null) ? 0 : currMember.count + 1
+    }
   })
   return members
 }

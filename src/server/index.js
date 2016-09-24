@@ -9,7 +9,7 @@ const portNum = process.env.PORT || 8080
 app.use('/', (req, res) => {
   api.getMembers().then((members) => {
     api.getMessages().then((messages) => {
-      res.send(nlp.findLovers(messages, members))
+      res.send(nlp.measureParticipants(messages, members))
     })
   })
 })
