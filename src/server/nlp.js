@@ -6,7 +6,6 @@ exports.measureParticipants = function(messages, members) {
   messages.forEach((element) => {
     if (!isNaN(element['sender_id'])) {
       const currMember = members[members.findIndex((member) => {
-        console.log(member)
         return member['user_id'] === element['sender_id']
       })]
       currMember.count = (currMember.count === undefined ||
@@ -16,42 +15,15 @@ exports.measureParticipants = function(messages, members) {
   return members
 }
 
+
 exports.findLovers = function(messages, members) {
-  //get message timestamps for each user
-  let conversationTimes = new Object()
-  members.forEach((member) => {
-    messages.forEach((message) => {
-      if (member['user_id'] === message['sender_id']) {
-        let conversationArray = conversationTimes[member['user_id']]
-        if (!conversationArray) {
-          conversationTimes[member['user_id']] = []
-          conversationArray = conversationTimes[member['user_id']]
-        }
-        conversationArray.push(message['created_at'])
-      }
-    })
-  })
   //compare messages for each member, make adj list for convos between users
-  let numConversations = new Object()
-  members.forEach((member) => {
-    members.forEach((secondMember) => {
-      if (member !== secondMember) {
-        const firstID = member['user_id']
-        const secondID = secondMember['user_id']
-        const firstChat = conversationTimes[firstID]
-        const secondChat = conversationTimes[secondID]
-        numConversations[firstID + secondID] =
-                            countChats(firstChat, secondChat)
-        numConversations[secondID + firstID] =
-                            countChats(firstChat, secondChat)
-      }
-    })
-  })
-  // find the largest element in numConversations for lovers
+  const frequentConvos = logFrequentChatPairs(messages, members)
+  // find the largest element in frequentConvos for lovers
   let max = -1
   let maxKey = ''
-  Object.keys(numConversations).forEach((key) => {
-    const curr = numConversations[key]
+  Object.keys(frequentConvos).forEach((key) => {
+    const curr = frequentConvos[key].count
     if (max < curr) {
       max = curr
       maxKey = key
@@ -69,18 +41,102 @@ exports.findLovers = function(messages, members) {
     img: members.find((member) => member.user_id === userId2).image_url
   }]
 }
+ 
+exports.findMostPopular = function(messages, members) {
+  popularPeople = {} 
+  const frequentConvos = logFrequentChatPairs(messages, members)
+  members.forEach((member) => {
+    members.forEach((secondMember) => {
+      if (member !== secondMember) {
+        const firstID = member['user_id']
+        const secondID = secondMember['user_id']
+        if (!popularPeople[firstID]) {
+          popularPeople[firstID] = {count:0,
+                                    messages: new Set()} 
+        }
+        popularPeople[firstID].count += frequentConvos[firstID + secondID].count
+        frequentConvos[firstID + secondID]
+        .messageTimeStamps
+        .forEach((timeStamp) => {
+          popularPeople[firstID].messages.add(
+          messages.find((message) => {
+            return parseInt(message.created_at) === parseInt(timeStamp)
+          }).text)
+        })
+      }
+    })
+  })
+  //convert set to array
+  members.forEach((member) => {
+    const firstID = member['user_id']
+    popularPeople[firstID].messages = Array.from(popularPeople[firstID].messages)
+  })
+  //find most popular person with correct name
+  let max = -1
+  let maxKey = ''
+  Object.keys(popularPeople).forEach((key) => {
+    const curr = popularPeople[key].count
+    if (max < curr) {
+      max = curr
+      maxKey = key
+    }
+  })
+  const userId = maxKey
+  return [{
+    user_id: userId,
+    name: members.find((member) => member.user_id === userId).nickname,
+    messages: popularPeople[userId].messages
+  }]
+}
+    
 
-function countChats(firstChat, secondChat) {
+function logFrequentChatPairs(messages, members) {
+  //get message timestamps for each user
+  let conversationTimes = new Object()
+  members.forEach((member) => {
+    messages.forEach((message) => {
+      if (member['user_id'] === message['sender_id']) {
+        let conversationArray = conversationTimes[member['user_id']]
+        if (!conversationArray) {
+          conversationTimes[member['user_id']] = []
+          conversationArray = conversationTimes[member['user_id']]
+        }
+        conversationArray.push(message['created_at'])
+      }
+    })
+  })
+  //compare messages for each member, make adj list for convos between users
+  let frequentConvos = new Object()
+  members.forEach((member) => {
+    members.forEach((secondMember) => {
+      if (member !== secondMember) {
+        const firstID = member['user_id']
+        const secondID = secondMember['user_id']
+        const firstChat = conversationTimes[firstID]
+        const secondChat = conversationTimes[secondID]
+        frequentConvos[firstID + secondID] =
+                            logFrequentChats(firstChat, secondChat)
+        frequentConvos[secondID + firstID] = frequentConvos[firstID + secondID]
+      }
+    })
+  })
+  return frequentConvos
+}
+
+function logFrequentChats(firstChat, secondChat) {
+  let count = 0
+  let messageTimeStamps = []
   if (!firstChat || !secondChat) {
-    return 0
+    return {messageTimeStamps, count}
   }
   let i = firstChat.length - 1
   let j = secondChat.length - 1
-  let count = 0
   while (j > 0 && i > 0) {
     let diff = firstChat[i] - secondChat[j]
     if (Math.abs(diff) < 60 * 3) {
       ++count
+      messageTimeStamps.push(firstChat[i])
+      messageTimeStamps.push(secondChat[j])
       i--
       j--
     } else {
@@ -91,5 +147,5 @@ function countChats(firstChat, secondChat) {
       }
     }
   }
-  return count
+  return {messageTimeStamps, count}
 }
