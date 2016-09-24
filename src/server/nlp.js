@@ -1,6 +1,7 @@
 const pos = require('pos')
 const MINUTE_LENGTH = 30
 const moment = require('moment')
+const sentiment = require('sentiment')
 
 exports.measureParticipants = function(messages, members) {
   messages.forEach((element) => {
@@ -42,6 +43,7 @@ exports.findLovers = function(messages, members) {
   }]
 }
  
+
 exports.findMostPopular = function(messages, members) {
   popularPeople = {} 
   const frequentConvos = logFrequentChatPairs(messages, members)
@@ -52,7 +54,10 @@ exports.findMostPopular = function(messages, members) {
         const secondID = secondMember['user_id']
         if (!popularPeople[firstID]) {
           popularPeople[firstID] = {count:0,
-                                    messages: new Set()} 
+                                    messages: new Set(),
+                                    sentMessages: new Set(),
+                                    totalSentiment: 0,
+                                    internalSentiment: 0}
         }
         popularPeople[firstID].count += frequentConvos[firstID + secondID].count
         frequentConvos[firstID + secondID]
@@ -63,30 +68,96 @@ exports.findMostPopular = function(messages, members) {
             return parseInt(message.created_at) === parseInt(timeStamp)
           }).text)
         })
+        console.log(frequentConvos[firstID + secondID])
+        frequentConvos[firstID + secondID]
+        .selfTimeStamps
+        .forEach((timeStamp) => {
+          popularPeople[firstID].sentMessages.add(
+          messages.find((message) => {
+            return parseInt(message.created_at) === parseInt(timeStamp)
+          }).text)
+        })
       }
     })
   })
-  //convert set to array
+  //convert set to array and count total sentiment
   members.forEach((member) => {
     const firstID = member['user_id']
     popularPeople[firstID].messages = Array.from(popularPeople[firstID].messages)
+    popularPeople[firstID].messages.forEach((message) => {
+      popularPeople[firstID].totalSentiment += sentiment(message).score
+    })
+    popularPeople[firstID].sentMessages.forEach((message) => {
+      popularPeople[firstID].internalSentiment += sentiment(message).score
+    })
   })
+
+  
   //find most popular person with correct name
   let max = -1
   let maxKey = ''
+  let mostHated = 50
+  let hatedKey = ''
+  let mostLiked = -50
+  let likedKey = ''
+  let mostSad = 50
+  let sadKey = ''
+  let mostHappy = -50
+  let happyKey = ''
+
   Object.keys(popularPeople).forEach((key) => {
     const curr = popularPeople[key].count
     if (max < curr) {
       max = curr
       maxKey = key
     }
+    let currSentiment = popularPeople[key].totalSentiment
+    if (mostHated > currSentiment) {
+      mostHated = currSentiment
+      hatedKey = key
+    } 
+    if (mostLiked < currSentiment) {
+      mostLiked = currSentiment
+      likedKey = key
+    }
+    currSentiment = popularPeople[key].internalSentiment
+    if (mostSad > currSentiment) {
+      mostSad = currSentiment
+      sadKey = key
+    } 
+    if (mostHappy < currSentiment) {
+      mostHappy = currSentiment
+      happyKey = key
+    }
   })
-  const userId = maxKey
-  return [{
-    user_id: userId,
-    name: members.find((member) => member.user_id === userId).nickname,
-    messages: popularPeople[userId].messages
-  }]
+  return {
+    popular: {
+      user_id: maxKey,
+      name: members.find((member) => member.user_id === maxKey).nickname,
+      messages: popularPeople[maxKey].messages
+    },
+    hated: {
+      user_id: hatedKey,
+      name: members.find((member) => member.user_id === hatedKey).nickname,
+      messages: popularPeople[hatedKey].messages
+    },
+    liked : {
+      user_id: likedKey,
+      name: members.find((member) => member.user_id === likedKey).nickname,
+      messages: popularPeople[likedKey].messages
+    },
+    sad: {
+      user_id: sadKey,
+      name: members.find((member) => member.user_id === sadKey).nickname,
+      messages: popularPeople[sadKey].messages
+    },
+    happy: {
+      user_id: happyKey,
+      name: members.find((member) => member.user_id === happyKey).nickname,
+      messages: popularPeople[happyKey].messages
+    }
+  }
+
 }
     
 
@@ -116,7 +187,6 @@ function logFrequentChatPairs(messages, members) {
         const secondChat = conversationTimes[secondID]
         frequentConvos[firstID + secondID] =
                             logFrequentChats(firstChat, secondChat)
-        frequentConvos[secondID + firstID] = frequentConvos[firstID + secondID]
       }
     })
   })
@@ -126,8 +196,9 @@ function logFrequentChatPairs(messages, members) {
 function logFrequentChats(firstChat, secondChat) {
   let count = 0
   let messageTimeStamps = []
+  let selfTimeStamps = []
   if (!firstChat || !secondChat) {
-    return {messageTimeStamps, count}
+    return {messageTimeStamps, selfTimeStamps, count}
   }
   let i = firstChat.length - 1
   let j = secondChat.length - 1
@@ -135,7 +206,7 @@ function logFrequentChats(firstChat, secondChat) {
     let diff = firstChat[i] - secondChat[j]
     if (Math.abs(diff) < 60 * 3) {
       ++count
-      messageTimeStamps.push(firstChat[i])
+      selfTimeStamps.push(firstChat[i])
       messageTimeStamps.push(secondChat[j])
       i--
       j--
@@ -147,5 +218,5 @@ function logFrequentChats(firstChat, secondChat) {
       }
     }
   }
-  return {messageTimeStamps, count}
+  return {messageTimeStamps, selfTimeStamps, count}
 }
