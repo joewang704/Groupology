@@ -6,10 +6,16 @@ const nlp2 = require('./nlp2.js')
 const app = express()
 const portNum = process.env.PORT || 8080
 
-app.use('/', (req, res) => {
+app.use(express.static(__dirname + '/../client'))
+
+app.get('/data', (req, res) => {
   api.getMembers().then((members) => {
     api.getMessages().then((messages) => {
-      res.send(nlp.findMostPopular(messages, members))
+      res.send({
+        lovers: nlp.findLovers(messages, members),
+        participants: nlp.measureParticipants(messages, members),
+        extremeTimePeople: nlp2.extremeTimePeople(messages),
+      })
     })
   })
 })
