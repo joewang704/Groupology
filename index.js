@@ -1,12 +1,15 @@
 const express = require('express')
 const api = require('./api.js')
+const nlp = require('./nlp.js')
 
 const app = express()
 const portNum = process.env.PORT || 8080
 
 app.use('/', (req, res) => {
   api.getMembers().then((members) => {
-    res.send(members)
+    api.getMessages().then((messages) => {
+      res.send(nlp.measureParticipants(messages, members))
+    })
   })
 })
 
