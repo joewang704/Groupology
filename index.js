@@ -5,8 +5,8 @@ const app = express()
 const portNum = process.env.PORT || 8080
 
 app.use('/', (req, res) => {
-  api.getMessages().then((response) => {
-    res.send(response)
+  api.getMembers().then((members) => {
+    res.send(members)
   })
 })
 
