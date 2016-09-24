@@ -10,21 +10,25 @@ exports.extremeTimePeople = (messages) => {
       count: -1,
     },
   }
-  const members = {}
+  const nightMembers = {}
+  const dayMembers = {}
   messages.forEach((message) => {
     const currTime = moment.unix(message.created_at)
     console.log(currTime.format('MMMM Do YYYY, h:mm:ss a'))
     if (currTime.isBetween(moment(currTime).set('hour', 4), moment(currTime).set('hour', 10))) {
-      let curr = members[message.user_id]
-      members[message.user_id] = curr === undefined || curr === null ? 0 : curr + 1
+      let curr = dayMembers[message.user_id]
+      dayMembers[message.user_id] = curr === undefined || curr === null ? 0 : curr + 1
       if (curr + 1 > returnObj.earlyBird.count) {
+        console.log("is early bird")
         returnObj.earlyBird.count = curr + 1
         returnObj.earlyBird.user_id = message.user_id
         returnObj.earlyBird.name = message.name
       }
-    } else if (currTime.isBetween(moment(currTime).set('hour', 22), moment(currTime).set('hour', 4).add('day', 1))) {
-      let curr = members[message.user_id]
-      members[message.user_id] = curr === undefined || curr === null ? 0 : curr + 1
+    } else if (currTime.isBetween(moment(currTime).set('hour', 22), moment(currTime).set('hour', 24))
+      || currTime.isBetween(moment(currTime).set('hour', 0), moment(currTime).set('hour', 4))) {
+      console.log("is night owl")
+      let curr = nightMembers[message.user_id]
+      nightMembers[message.user_id] = curr === undefined || curr === null ? 0 : curr + 1
       if (curr + 1 > returnObj.nightOwl.count) {
         returnObj.nightOwl.count = curr + 1
         returnObj.nightOwl.user_id = message.user_id
