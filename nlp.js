@@ -10,7 +10,6 @@ exports.measureParticipants = function(messages, members) {
     currMember.count = (currMember.count === undefined ||
       currMember.count === null) ? 0 : currMember.count + 1 
   })
-  // members.total = messages.length
   return members
 }
 
@@ -36,8 +35,6 @@ exports.findLovers = function(messages, members) {
       if (member !== secondMember) {
         const firstID = member['user_id']
         const secondID = secondMember['user_id']
-        //console.log("SECOND ID:")
-        //console.log(secondID)
         const firstChat = conversationTimes[firstID]
         const secondChat = conversationTimes[secondID]
         numConversations[firstID + secondID] =
@@ -59,7 +56,6 @@ function countChats(firstChat, secondChat) {
   let count = 0
   while (j > 0 && i > 0) {
     let diff = firstChat[i] - secondChat[j]
-    console.log(diff)
     if (Math.abs(diff) < 60 * 3) {
       ++count
       i--
