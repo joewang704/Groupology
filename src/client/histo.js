@@ -8,7 +8,7 @@ function changeHist(d) {
 
 var dataIntermediate=names.map(function(key,i){
     return data.map(function(d,j){
-        return {x: d['hour'], y: d[key] };
+        return {x: d['hour'], y: d[key], q: names[i], f: d['tot']};
     })
 })
 var margin = {top: 20, right: 50, bottom: 30, left: 50},
@@ -34,11 +34,6 @@ var svg = d3.select("#graphs").append("svg")
         .append("g")
         .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-var dataIntermediate = xData.map(function (c) {
-    return data.map(function (d) {
-        return {x: d.hour, y: d[c]};
-    });
-});
 
 var dataStackLayout = d3.layout.stack()(dataIntermediate);
 
@@ -62,6 +57,7 @@ var layer = svg.selectAll(".stack")
 
 layer.selectAll("rect")
         .data(function (d) {
+            console.log(d)
             return d;
         })
         .enter().append("rect")
@@ -74,7 +70,11 @@ layer.selectAll("rect")
         .attr("height", function (d) {
             return y(d.y0) - y(d.y + d.y0);
         })
-        .attr("width", x.rangeBand());
+        .attr("width", x.rangeBand())
+			.on("mouseover", function(d, i){return tooltip.style("visibility", "visible").text(d.q + " " + (100.0 * d.y)/d.f + "%");})
+			.on("mousemove", function(d){return tooltip.style("top", (event.pageY-10)+"px").style("left",(event.pageX+10)+"px").text(d.q + " " + (100.0 * d.y)/d.f + "%");})
+			.on("mouseout", function(d){return tooltip.style("visibility", "hidden");})
+
 
 
 svg.append("g")
@@ -88,6 +88,13 @@ svg.append("g")
         .attr("transform", "rotate(80)")
         .style("text-anchor", "start")
 
+var tooltip = d3.select("body")
+			.append("div")
+			.style("position", "absolute")
+			.style("font-family", "'Open Sans', sans-serif")
+			.style("font-size", "12px")
+			.style("z-index", "10")
+			.style("visibility", "hidden");
 svg.append("text")
 	.attr("x", (width / 2))
 	.attr("y", 0)
@@ -95,3 +102,4 @@ svg.append("text")
 	.style("font-size", "20px")
 	.text("Group Activity By Time of Day");
 }
+
