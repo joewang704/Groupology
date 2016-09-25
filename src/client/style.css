@@ -1,10 +1,22 @@
 body {
   background-color: #F6F6F6;
   width: 100%;
+  font-family: 'Open Sans';
 }
 
 #container {
   width: 100%;
+}
+
+.user {
+  font-size: 20px;
+  font-family: 'Raleway';
+}
+
+#firstRow {
+  width: 100%;
+  order: -1;
+  justify-content: space-around;
 }
 
 .title {
@@ -20,16 +32,30 @@ body {
   position: relative;
   overflow: hidden;
   border-radius: 50%;
+  background-color: #0094ff;
+  margin: 0 auto;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
 }
 
 .icon-resize {
+  position: absolute;
   width: 150px;
   height: auto;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+  min-height: 50px;
 }
 
 .flex-row {
   display: flex;
   flex-direction: row;
+}
+
+.flex-column {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .heart {
@@ -55,3 +81,14 @@ polyline{
 	stroke-width: 2px;
 	fill: none;
 }
+
+#pieChart {
+  height: 450px;
+  width: 960px;
+}
+
+/* Helper */
+.center {
+  text-align: center;
+}
+
