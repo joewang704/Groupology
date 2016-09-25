@@ -30,11 +30,39 @@ function getData() {
           max = user.count
         }
       })
-      $('#container').prepend(`
+      /*
         <div class="title flex-row" style="order: -2">
           Groupmeme
         </div>
-        <div class="flex-row" style="justify-content: space-around; width: 100%">
+        */
+      $('#container').prepend(`
+      `)
+      $('#firstRow').prepend(`
+        <div class="flex-column" style="justify-content: center; width: 30%">
+          <div class="icon-row">
+            <div class="space-top">
+              <div class="user center">
+                MOST TALKATIVE
+              </div>
+              <div class="icon-mask">
+                <img class="icon-resize" src="${maxParticipant.image_url || 'http://style.anu.edu.au/_anu/4/images/placeholders/person.png'}"></img>
+              </div>
+              <div class="center">
+                ${maxParticipant.nickname}
+              </div>
+            </div>
+          <div class="space-top">
+            <div class="user center">
+              MOST POPULAR
+            </div>
+            <div class="icon-mask">
+              <img class="icon-resize" src="${popularPeople.popular.img || 'http://style.anu.edu.au/_anu/4/images/placeholders/person.png'}"></img>
+            </div>
+            <div class="center">
+              ${popularPeople.popular.name}
+            </div>
+          </div>
+          </div>
           <div class="space-top">
             <div class="user center">
               LOVE BIRDS
@@ -42,7 +70,7 @@ function getData() {
             <div class="flex-row">
               <div>
                 <div class="icon-mask">
-                  <img src="${lovers[0].img}"></img>
+                  <img src="${lovers[0].img || 'http://style.anu.edu.au/_anu/4/images/placeholders/person.png'}"></img>
                 </div>
                 <div class="center">${lovers[0].name}</div>
               </div>
@@ -51,18 +79,67 @@ function getData() {
               </div>
               <div>
                 <div class="icon-mask">
-                  <img src="${lovers[1].img}"></img>
+                  <img src="${lovers[1].img || 'http://style.anu.edu.au/_anu/4/images/placeholders/person.png'}"></img>
                 </div>
                 <div class="center">${lovers[1].name}</div>
               </div>
             </div>
           </div>
+          <div class="icon-row">
+            <div class="space-top">
+              <div class="user center">
+                MOST LIKED
+              </div>
+              <div class="icon-mask">
+                <img class="icon-resize" src="${popularPeople.liked.img || 'http://style.anu.edu.au/_anu/4/images/placeholders/person.png'}"></img>
+              </div>
+              <div class="center">
+                ${popularPeople.liked.name}
+              </div>
+            </div>
+            <div class="space-top">
+              <div class="user center">
+                MOST BULLIED
+              </div>
+              <div class="icon-mask">
+                <img class="icon-resize" src="${popularPeople.hated.img || 'http://style.anu.edu.au/_anu/4/images/placeholders/person.png'}"></img>
+              </div>
+              <div class="center">
+                ${popularPeople.hated.name}
+              </div>
+            </div>
+          </div>
+        <div class="icon-row">
+          <div class="space-top">
+            <div class="user center">
+              HAPPIEST
+            </div>
+            <div class="icon-mask">
+              <img class="icon-resize" src="${popularPeople.happy.img || 'http://style.anu.edu.au/_anu/4/images/placeholders/person.png'}"></img>
+            </div>
+            <div class="center">
+              ${popularPeople.happy.name}
+            </div>
+          </div>
+          <div class="space-top">
+            <div class="user center">
+              SADDEST
+            </div>
+            <div class="icon-mask">
+              <img class="icon-resize" src="${popularPeople.sad.img || 'http://style.anu.edu.au/_anu/4/images/placeholders/person.png'}"></img>
+            </div>
+            <div class="center">
+              ${popularPeople.sad.name}
+            </div>
+          </div>
+        </div>
+        <div class="icon-row">
         <div class="space-top">
           <div class="user center">
             EARLY BIRD
           </div>
           <div class="icon-mask">
-            <img class="icon-resize" src="${extremeTimePeople.earlyBird.img}"></img>
+            <img class="icon-resize" src="${extremeTimePeople.earlyBird.img || 'http://style.anu.edu.au/_anu/4/images/placeholders/person.png'}"></img>
           </div>
           <div class="center">
             ${extremeTimePeople.earlyBird.name || 'None'}
@@ -73,82 +150,13 @@ function getData() {
             NIGHT OWL
           </div>
           <div class="icon-mask">
-            <img class="icon-resize" src="${extremeTimePeople.nightOwl.img}"></img>
+            <img class="icon-resize" src="${extremeTimePeople.nightOwl.img || 'http://style.anu.edu.au/_anu/4/images/placeholders/person.png'}"></img>
           </div>
           <div class="center">
             ${extremeTimePeople.nightOwl.name || 'None'}
           </div>
         </div>
         </div>
-        <div class="flex-row" style="justify-content: space-around; width: 100%">
-          <div class="space-top">
-            <div class="user center">
-              MOST POPULAR
-            </div>
-            <div class="icon-mask">
-              <img class="icon-resize" src="${popularPeople.popular.img}"></img>
-            </div>
-            <div class="center">
-              ${popularPeople.popular.name}
-            </div>
-          </div>
-          <div class="space-top">
-            <div class="user center">
-              MOST LIKED
-            </div>
-            <div class="icon-mask">
-              <img class="icon-resize" src="${popularPeople.liked.img}"></img>
-            </div>
-            <div class="center">
-              ${popularPeople.liked.name}
-            </div>
-          </div>
-          <div class="space-top">
-            <div class="user center">
-              MOST BULLIED
-            </div>
-            <div class="icon-mask">
-              <img class="icon-resize" src="${popularPeople.hated.img}"></img>
-            </div>
-            <div class="center">
-              ${popularPeople.hated.name}
-            </div>
-          </div>
-          <div class="space-top">
-            <div class="user center">
-              HAPPIEST PERSON
-            </div>
-            <div class="icon-mask">
-              <img class="icon-resize" src="${popularPeople.happy.img}"></img>
-            </div>
-            <div class="center">
-              ${popularPeople.happy.name}
-            </div>
-          </div>
-          <div class="space-top">
-            <div class="user center">
-              SADDEST PERSON
-            </div>
-            <div class="icon-mask">
-              <img class="icon-resize" src="${popularPeople.sad.img}"></img>
-            </div>
-            <div class="center">
-              ${popularPeople.sad.name}
-            </div>
-          </div>
-        </div>
-      `)
-      $('#firstRow').prepend(`
-        <div class="flex-column">
-          <div class="user">
-            MOST TALKATIVE
-          </div>
-          <div class="icon-mask">
-            <img class="icon-resize" src="${maxParticipant.image_url}"></img>
-          </div>
-          <div>
-            ${maxParticipant.nickname}
-          </div>
         </div>
       `)
       change(Object.keys(participants).reduce((acc, key) => {
@@ -161,7 +169,7 @@ function getData() {
         return acc
       }, []))
     changeHist(density)
-      setTimeout(modifyImages, 100)
+      setTimeout(modifyImages, 200)
     },
   })
 }
