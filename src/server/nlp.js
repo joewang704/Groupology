@@ -120,7 +120,6 @@ exports.findMostPopular = function(messages, members) {
             return parseInt(message.created_at) === parseInt(timeStamp)
           }).text)
         })
-        console.log(frequentConvos[firstID + secondID])
         frequentConvos[firstID + secondID]
         .selfTimeStamps
         .forEach((timeStamp) => {
@@ -186,27 +185,32 @@ exports.findMostPopular = function(messages, members) {
     popular: {
       user_id: maxKey,
       name: members.find((member) => member.user_id === maxKey).nickname,
-      messages: popularPeople[maxKey].messages
+      messages: popularPeople[maxKey].messages,
+      img: members.find((member) => member.user_id === maxKey).image_url,
     },
     hated: {
       user_id: hatedKey,
       name: members.find((member) => member.user_id === hatedKey).nickname,
-      messages: popularPeople[hatedKey].messages
+      messages: popularPeople[hatedKey].messages,
+      img: members.find((member) => member.user_id === hatedKey).image_url,
     },
     liked : {
       user_id: likedKey,
       name: members.find((member) => member.user_id === likedKey).nickname,
-      messages: popularPeople[likedKey].messages
+      messages: popularPeople[likedKey].messages,
+      img: members.find((member) => member.user_id === likedKey).image_url,
     },
     sad: {
       user_id: sadKey,
       name: members.find((member) => member.user_id === sadKey).nickname,
-      messages: popularPeople[sadKey].messages
+      messages: popularPeople[sadKey].messages,
+      img: members.find((member) => member.user_id === sadKey).image_url
     },
     happy: {
       user_id: happyKey,
       name: members.find((member) => member.user_id === happyKey).nickname,
-      messages: popularPeople[happyKey].messages
+      messages: popularPeople[happyKey].messages,
+      img: members.find((member) => member.user_id === happyKey).image_url,
     }
   }
 

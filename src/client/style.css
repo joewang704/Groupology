@@ -2,10 +2,15 @@ body {
   background-color: #F6F6F6;
   width: 100%;
   font-family: 'Open Sans';
+  color: #333;
 }
 
 #container {
   width: 100%;
+}
+
+.space-top {
+  padding-top: 100px;
 }
 
 .user {
@@ -37,10 +42,20 @@ body {
   box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
 }
 
-.icon-resize {
+.icon-resize-tall {
   position: absolute;
   width: 150px;
   height: auto;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+  min-height: 50px;
+}
+
+.icon-resize-wide {
+  position: absolute;
+  width: auto;
+  height: 150px;
   top: 0;
   bottom: 0;
   margin: auto;

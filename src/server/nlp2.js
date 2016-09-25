@@ -53,7 +53,6 @@ exports.mostPopularWord = (messages) => {
         const word = wordArr[0]
         const tag = wordArr[1]
         if (['CC', 'DT', 'EX', 'RP'].indexOf(tag) === -1 && word.length > 1) {
-          //console.log(wordArr)
           if (word != "") {
             let curr = msgCount[word]
             msgCount[word] =
@@ -67,7 +66,6 @@ exports.mostPopularWord = (messages) => {
       })
     }
   })
-  //console.log(msgCount)
   return msgCount
 }
 
