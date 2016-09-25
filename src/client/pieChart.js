@@ -1,3 +1,4 @@
+const tau = 2 * Math.PI
 var svg = d3.select("#pieChart")
 	.append("svg")
 	.append("g")
@@ -31,96 +32,117 @@ svg.attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
 
 var key = function(d){ return d.data.label; };
 
-var color = d3.scale.category20()
-	.domain(["Lorem ipsum", "dolor sit", "amet", "consectetur", "adipisicing", "elit", "sed", "do", "eiusmod", "tempor", "incididunt"]);
+var color = d3.scale.category20() .domain(["Lorem ipsum", "dolor sit", "amet", "consectetur", "adipisicing", "elit", "sed", "do", "eiusmod", "tempor", "incididunt"]);
+
+
 
 function change(data) {
+  apples = []
+  oranges = []
+  names = {} 
 
-	/* ------- PIE SLICES -------*/
-	var slice = svg.select(".slices").selectAll("path.slice")
-		.data(pie(data), key);
+  data.forEach((member) => {
+        apples.push(1)
+        oranges.push(member.value)
+        if (!names[member.value]) {
+          names[member.value] = []
+        }
+        names[member.value].push(member.label)
+    })
+  apples.push(2000)
+  dataset = {
+    apples,
+    oranges
+  };
 
-	slice.enter()
-		.insert("path")
-		.style("fill", function(d) { return color(d.data.label); })
-		.attr("class", "slice");
+  var width = 960,
+    height = 450,
+    radius = Math.min(width, height) / 2;
 
-	slice
-		.transition().duration(1000)
-		.attrTween("d", function(d) {
-			this._current = this._current || d;
-			var interpolate = d3.interpolate(this._current, d);
-			this._current = interpolate(0);
-			return function(t) {
-				return arc(interpolate(t));
-			};
-		})
+  var enterAntiClockwise = {
+    startAngle: Math.PI * 2,
+    endAngle: Math.PI * 2
+  };
 
-	slice.exit()
-		.remove();
+  var color = d3.scale.category20();
 
-	/* ------- TEXT LABELS -------*/
+  var pie = d3.layout.pie()
+    .sort(null);
 
-	var text = svg.select(".labels").selectAll("text")
-		.data(pie(data), key);
+  var tip = d3.tip()
+    .attr('class', 'd3-tip')
+    .offset([-10, 0])
+    .html(function(d) {
+      names[d.value].push(names[d.value][0])
+      return "<strong>" + names[d.value].shift() + "</strong> <span style='color:red'>" + d.value + "</span>";
+      
+    })
 
-	text.enter()
-		.append("text")
-		.attr("dy", ".35em")
-		.text(function(d) {
-			return d.data.label;
-		}); // gets text onto screen
+/* Invoke the tip in the context of your visualization */
+svg.call(tip)
 
-	function midAngle(d){
-		return d.startAngle + (d.endAngle - d.startAngle)/2;
-	} //finds minpoint of arcs
+  var arc = d3.svg.arc()
+    .innerRadius(radius - 100)
+    .outerRadius(radius - 20)
 
-	text.transition().duration(1000)
-		.attrTween("transform", function(d) {
-			this._current = this._current || d;
-			var interpolate = d3.interpolate(this._current, d);
-			this._current = interpolate(0);
-			return function(t) {
-				var d2 = interpolate(t);
-				var pos = outerArc.centroid(d2);
-				pos[0] = radius * (midAngle(d2) < Math.PI ? 1 : -1);
-        //if less than pi, its top half of circle
-				return "translate("+ pos +")";
-			};
-		})
-		.styleTween("text-anchor", function(d){
-			this._current = this._current || d;
-			var interpolate = d3.interpolate(this._current, d);
-			this._current = interpolate(0);
-			return function(t) {
-				var d2 = interpolate(t);
-				return midAngle(d2) < Math.PI ? "start":"end";
-			};
-		});
 
-	text.exit()
-		.remove(); //remove extra
+  var path = svg.selectAll("path")
+    .data(pie(dataset.apples))
+    .enter().append("path")
+    .attr("fill", function(d, i) { return color(i); })
+    .attr("d", arc)
+    .attr("class", "arc")
+    .each(function(d) { this._current = d; }) // store the initial values
+    .on('mouseover', tip.show)
+    .on('mouseout', tip.hide)
+  var timeout = setTimeout(change(), 20);
 
-	/* ------- SLICE TO TEXT POLYLINES -------*/
+  function change() {
+    clearTimeout(timeout);
+    path = path.data(pie(dataset.oranges)); // update the data
+    // set the start and end angles to Math.PI * 2 so we can transition
+    // anticlockwise to the actual values later
+    path.enter().append("path")
+        .attr("fill", function (d, i) {
+          return color(i);
+        })
+        .attr("d", arc(enterAntiClockwise))
+        .each(function (d) {
+          this._current = {
+            data: d.data,
+            value: d.value,
+            startAngle: enterAntiClockwise.startAngle,
+            endAngle: enterAntiClockwise.endAngle
+          };
+        }) // store the initial values
 
-	var polyline = svg.select(".lines").selectAll("polyline")
-		.data(pie(data), key);
+    path.exit()
+        .transition()
+        .duration(750)
+        .attrTween('d', arcTweenOut)
+        .remove() // now remove the exiting arcs
 
-	polyline.enter()
-		.append("polyline");
+    path.transition().duration(750).attrTween("d", arcTween); // redraw the arcs
+  }
 
-	polyline.transition().duration(1000)
-		.attrTween("points", function(d){
-			this._current = this._current || d;
-			var interpolate = d3.interpolate(this._current, d);
-			this._current = interpolate(0);
-			return function(t) {
-				var d2 = interpolate(t);
-				var pos = outerArc.centroid(d2);
-				pos[0] = radius * 0.95 * (midAngle(d2) < Math.PI ? 1 : -1);
-				return [arc.centroid(d2), outerArc.centroid(d2), pos];
-			};
-		});
-	polyline.exit()
-		.remove();
+  // Store the displayed angles in _current.
+  // Then, interpolate from _current to the new angles.
+  // During the transition, _current is updated in-place by d3.interpolate.
+  function arcTween(a) {
+    var i = d3.interpolate(this._current, a);
+    this._current = i(0);
+    return function(t) {
+    return arc(i(t));
+    };
+  }
+  // Interpolate exiting arcs start and end angles to Math.PI * 2
+  // so that they 'exit' at the end of the data
+  function arcTweenOut(a) {
+    var i = d3.interpolate(this._current, {startAngle: Math.PI * 2, endAngle: Math.PI * 2, value: 0});
+    this._current = i(0);
+    return function (t) {
+      return arc(i(t));
+    };
+  }
 };
+
