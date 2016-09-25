@@ -143,10 +143,14 @@ exports.findMostPopular = function(messages, members) {
     const firstID = member['user_id']
     popularPeople[firstID].messages = Array.from(popularPeople[firstID].messages)
     popularPeople[firstID].messages.forEach((message) => {
-      popularPeople[firstID].totalSentiment += sentiment(message).score
+      if (message) {
+        popularPeople[firstID].totalSentiment += sentiment(message).score
+      }
     })
     popularPeople[firstID].sentMessages.forEach((message) => {
-      popularPeople[firstID].internalSentiment += sentiment(message).score
+      if (message) {
+        popularPeople[firstID].internalSentiment += sentiment(message).score
+      }
     })
   })
 

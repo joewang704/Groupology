@@ -23,6 +23,7 @@ app.get('/', (req, res) => {
 })
 
 app.get('/data', (req, res) => {
+  console.log(token)
   api.getMembers(token, groupId).then((members) => {
     api.getMessages(token, groupId).then((messages) => {
       res.send({

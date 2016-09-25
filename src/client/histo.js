@@ -90,7 +90,7 @@ svg.append("g")
 
 svg.append("text")
 	.attr("x", (width / 2))
-	.attr("y", 10)
+	.attr("y", 0)
 	.attr("text-anchor", "middle")
 	.style("font-size", "20px")
 	.text("Group Activity By Time of Day");
