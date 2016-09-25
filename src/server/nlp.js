@@ -104,7 +104,7 @@ exports.findLovers = function(messages, members) {
 
 
 exports.findMostPopular = function(messages, members) {
-  popularPeople = {}
+  let popularPeople = {}
   const frequentConvos = logFrequentChatPairs(messages, members)
   members.forEach((member) => {
     members.forEach((secondMember) => {

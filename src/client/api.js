@@ -168,7 +168,7 @@ function getData() {
         }
         return acc
       }, []))
-    changeHist(density)
+      changeHist(density)
       setTimeout(modifyImages, 200)
     },
   })

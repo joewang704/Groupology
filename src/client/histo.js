@@ -4,16 +4,13 @@ var svg = d3.select("#histo")
 function changeHist(d) {
   var data = d.toPlot
   var names = d.names
-  console.log(data)
   var xData = names
-  console.log(xData)
 
 var dataIntermediate=names.map(function(key,i){
     return data.map(function(d,j){
         return {x: d['hour'], y: d[key] };
     })
 })
-console.log(dataIntermediate)
 var margin = {top: 20, right: 50, bottom: 30, left: 50},
         width = 800 - margin.left - margin.right,
         height = 500 - margin.top - margin.bottom;
@@ -31,7 +28,7 @@ var xAxis = d3.svg.axis()
         .scale(x)
         .orient("bottom");
 
-var svg = d3.select("body").append("svg")
+var svg = d3.select("#graphs").append("svg")
         .attr("width", width + margin.left + margin.right)
         .attr("height", height + margin.top + margin.bottom)
         .append("g")
@@ -44,7 +41,6 @@ var dataIntermediate = xData.map(function (c) {
 });
 
 var dataStackLayout = d3.layout.stack()(dataIntermediate);
-console.log(dataStackLayout)
 
 x.domain(dataStackLayout[0].map(function (d) {
     return d.x;
@@ -91,4 +87,11 @@ svg.append("g")
         .attr("dy", ".35em")
         .attr("transform", "rotate(80)")
         .style("text-anchor", "start")
+
+svg.append("text")
+	.attr("x", (width / 2))
+	.attr("y", 10)
+	.attr("text-anchor", "middle")
+	.style("font-size", "20px")
+	.text("Group Activity By Time of Day");
 }

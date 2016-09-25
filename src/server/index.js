@@ -29,11 +29,8 @@ app.get('/data', (req, res) => {
         lovers: nlp.findLovers(messages, members),
         participants: nlp.measureParticipants(messages, members),
         extremeTimePeople: nlp2.extremeTimePeople(messages),
-<<<<<<< 480baadd7f22a23ac874c1d2b9aec9efd1753ee0
         density: nlp.plotDensity(messages),
-=======
         popularPeople: nlp.findMostPopular(messages, members),
->>>>>>> Working login
       })
     })
   })
