@@ -9,7 +9,7 @@ function getData() {
     url: 'http://localhost:8080/data',
     success: (data) => {
       console.log(data)
-      const { lovers, participants, extremeTimePeople } = data
+      const { lovers, participants, extremeTimePeople, density } = data
       $('#container').prepend(`
         <div>
           <div class="title flex-row">
@@ -53,6 +53,7 @@ function getData() {
         }
         return acc
       }, []))
+    changeHist(density)
     },
   })
 }

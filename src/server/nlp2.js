@@ -1,3 +1,4 @@
+"use strict"
 const pos = require('pos')
 const moment = require('moment')
 

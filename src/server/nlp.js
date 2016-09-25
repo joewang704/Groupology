@@ -1,3 +1,4 @@
+"use strict"
 const pos = require('pos')
 const MINUTE_LENGTH = 30
 const moment = require('moment')
@@ -16,7 +17,58 @@ exports.measureParticipants = function(messages, members) {
   return members
 }
 
+exports.plotDensity = function(messages) {
+  //get earliest and latest times
+  var times = messages.map(function(msg) {return msg['created_at']})
+  var names = messages.map(function(msg) {return msg['name']})
+  var earliest = moment.unix(Math.min.apply(null, times))
+  var latest = moment.unix(Math.max.apply(null, times))
+  names = names.filter(function(item, pos) {
+        return names.indexOf(item) == pos;
+  })
 
+  //initialize
+  var stackedData = []
+  for (var i = 0; i < 24; i++) {
+    var toAdd = {}
+    names.forEach((name) => {
+      var curr = {[name] : 0}
+      Object.assign(toAdd, curr)
+    })
+    var currHour = {'hour': hourConverter(i)}
+    Object.assign(currHour, toAdd)
+    stackedData.push(currHour)
+  }
+
+
+  messages.forEach((msg) => {
+    var hour = parseInt(moment.unix(msg['created_at']).format("HH"))
+    var name = msg['name']
+    stackedData[hour][name] += 1
+  })
+
+  //find number of bins
+  var hours = latest.diff(earliest, 'hours')
+  var days = latest.diff(earliest, 'days')
+  var months = latest.diff(earliest, 'months')
+
+  return {
+      names: names,
+      toPlot: stackedData
+    }
+  }
+
+
+function hourConverter(hh) {
+  var num = parseInt(hh)
+  if (num > 12) {
+    return (num - 12) + ":00 PM"
+  } else if (num == 0) {
+    return "12:00 AM"
+  } else {
+    return hh + ":00 AM"
+  }
+}
 exports.findLovers = function(messages, members) {
   //compare messages for each member, make adj list for convos between users
   const frequentConvos = logFrequentChatPairs(messages, members)
@@ -42,10 +94,10 @@ exports.findLovers = function(messages, members) {
     img: members.find((member) => member.user_id === userId2).image_url
   }]
 }
- 
+
 
 exports.findMostPopular = function(messages, members) {
-  popularPeople = {} 
+  popularPeople = {}
   const frequentConvos = logFrequentChatPairs(messages, members)
   members.forEach((member) => {
     members.forEach((secondMember) => {
@@ -92,7 +144,7 @@ exports.findMostPopular = function(messages, members) {
     })
   })
 
-  
+
   //find most popular person with correct name
   let max = -1
   let maxKey = ''
@@ -115,7 +167,7 @@ exports.findMostPopular = function(messages, members) {
     if (mostHated > currSentiment) {
       mostHated = currSentiment
       hatedKey = key
-    } 
+    }
     if (mostLiked < currSentiment) {
       mostLiked = currSentiment
       likedKey = key
@@ -124,7 +176,7 @@ exports.findMostPopular = function(messages, members) {
     if (mostSad > currSentiment) {
       mostSad = currSentiment
       sadKey = key
-    } 
+    }
     if (mostHappy < currSentiment) {
       mostHappy = currSentiment
       happyKey = key
@@ -159,7 +211,7 @@ exports.findMostPopular = function(messages, members) {
   }
 
 }
-    
+
 
 function logFrequentChatPairs(messages, members) {
   //get message timestamps for each user
