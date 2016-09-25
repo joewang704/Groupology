@@ -32,7 +32,7 @@ function getData() {
       })
       $('#container').prepend(`
         <div class="title flex-row" style="order: -2">
-          Groupmeme.
+          Groupmeme
         </div>
         <div class="flex-row" style="justify-content: space-around; width: 100%">
           <div class="space-top">
@@ -76,7 +76,7 @@ function getData() {
             <img class="icon-resize" src="${extremeTimePeople.nightOwl.img}"></img>
           </div>
           <div class="center">
-            ${extremeTimePeople.nightOwl.name}
+            ${extremeTimePeople.nightOwl.name || 'None'}
           </div>
         </div>
         </div>
@@ -105,7 +105,7 @@ function getData() {
           </div>
           <div class="space-top">
             <div class="user center">
-              MOST NOTORIOUS
+              MOST BULLIED
             </div>
             <div class="icon-mask">
               <img class="icon-resize" src="${popularPeople.hated.img}"></img>
@@ -161,7 +161,7 @@ function getData() {
         return acc
       }, []))
     changeHist(density)
-      modifyImages()
+      setTimeout(modifyImages, 100)
     },
   })
 }

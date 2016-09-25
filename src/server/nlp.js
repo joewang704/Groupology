@@ -6,12 +6,14 @@ const sentiment = require('sentiment')
 
 exports.measureParticipants = function(messages, members) {
   messages.forEach((element) => {
-    if (!isNaN(element['sender_id'])) {
+    if (!isNaN(element['sender_id']) && element['sender_id']) {
       const currMember = members[members.findIndex((member) => {
         return member['user_id'] === element['sender_id']
       })]
-      currMember.count = (currMember.count === undefined ||
-        currMember.count === null) ? 0 : currMember.count + 1
+      if (currMember) {
+        currMember.count = (currMember.count === undefined ||
+          currMember.count === null) ? 0 : currMember.count + 1
+      }
     }
   })
   return members
@@ -82,8 +84,13 @@ exports.findLovers = function(messages, members) {
       maxKey = key
     }
   })
-  const userId1 = maxKey.substring(0, maxKey.length / 2)
-  const userId2 = maxKey.substring(maxKey.length / 2)
+  //const userId1 = maxKey.substring(0, maxKey.length / 2)
+  //const userId2 = maxKey.substring(maxKey.length / 2)
+  const userId1 = maxKey.split(',')[0]
+  const userId2 = maxKey.split(',')[1]
+  console.log(maxKey)
+  console.log(userId1)
+  console.log(userId2)
   return [{
     user_id: userId1,
     name: members.find((member) => member.user_id === userId1).nickname,
@@ -111,8 +118,8 @@ exports.findMostPopular = function(messages, members) {
                                     totalSentiment: 0,
                                     internalSentiment: 0}
         }
-        popularPeople[firstID].count += frequentConvos[firstID + secondID].count
-        frequentConvos[firstID + secondID]
+        popularPeople[firstID].count += frequentConvos[firstID + ',' + secondID].count
+        frequentConvos[firstID + ',' + secondID]
         .messageTimeStamps
         .forEach((timeStamp) => {
           popularPeople[firstID].messages.add(
@@ -120,7 +127,7 @@ exports.findMostPopular = function(messages, members) {
             return parseInt(message.created_at) === parseInt(timeStamp)
           }).text)
         })
-        frequentConvos[firstID + secondID]
+        frequentConvos[firstID + ',' + secondID]
         .selfTimeStamps
         .forEach((timeStamp) => {
           popularPeople[firstID].sentMessages.add(
@@ -241,7 +248,7 @@ function logFrequentChatPairs(messages, members) {
         const secondID = secondMember['user_id']
         const firstChat = conversationTimes[firstID]
         const secondChat = conversationTimes[secondID]
-        frequentConvos[firstID + secondID] =
+        frequentConvos[firstID + ',' + secondID] =
                             logFrequentChats(firstChat, secondChat)
       }
     })
