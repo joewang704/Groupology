@@ -25,7 +25,7 @@ app.get('/', (req, res) => {
 
 app.get('/verify', (req, res) => {
   token = req.query.access_token
-  res.sendFile('client/groups.html', { root: '../' })
+  res.redirect('/static/groups.html')
 })
 
 app.get('/data', (req, res) => {
