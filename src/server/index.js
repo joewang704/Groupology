@@ -19,7 +19,8 @@ app.use('/static', express.static(__dirname + '/../client'))
 app.use(bodyParser.json())
 
 app.get('/', (req, res) => {
-  res.sendFile('client/entry.html', { root: '../' })
+  //res.sendFile('client/entry.html', { root: '../' })
+  res.redirect('/static/client/entry.html')
 })
 
 app.get('/verify', (req, res) => {
