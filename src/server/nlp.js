@@ -28,6 +28,15 @@ exports.plotDensity = function(messages) {
   names = names.filter(function(item, pos) {
         return names.indexOf(item) == pos;
   })
+  var namesMap = {}
+  messages.forEach(({ name }) => {
+    namesMap[name] = namesMap[name] === undefined ? 1 : namesMap[name] + 1
+  })
+
+  var namesList = Object.keys(namesMap).sort((key) => namesMap[key])
+
+  console.log(JSON.stringify(namesMap))
+  console.log(JSON.stringify(namesList))
 
   //initialize
   var stackedData = []
@@ -57,8 +66,9 @@ exports.plotDensity = function(messages) {
   var months = latest.diff(earliest, 'months')
 
   return {
-      names: names,
-      toPlot: stackedData
+      names: namesList,
+      toPlot: stackedData,
+      length: messages.length,
     }
   }
 

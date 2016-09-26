@@ -40,7 +40,7 @@ svg.attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
 
 var key = function(d){ return d.data.label; };
 
-var color = d3.scale.category20() .domain(["Lorem ipsum", "dolor sit", "amet", "consectetur", "adipisicing", "elit", "sed", "do", "eiusmod", "tempor", "incididunt"]);
+var color = d3.scale.category20()
 
 
 

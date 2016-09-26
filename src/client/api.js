@@ -65,7 +65,7 @@ function getData() {
           </div>
           <div class="space-top">
             <div class="user center">
-              LOVE BIRDS
+              SECRETLY DATING
             </div>
             <div class="flex-row">
               <div>
@@ -163,7 +163,7 @@ function getData() {
         if (participants[key].count) {
           acc.push({
             label: participants[key].nickname,
-            value: participants[key].count,
+            value: participants[key].count / density.length * 100.0,
           })
         }
         return acc

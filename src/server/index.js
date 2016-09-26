@@ -18,6 +18,10 @@ app.use('/static', express.static(__dirname + '/../client'))
 app.use(bodyParser.json())
 
 app.get('/', (req, res) => {
+  res.sendFile('client/entry.html', { root: '../' })
+})
+
+app.get('/verify', (req, res) => {
   token = req.query.access_token
   res.sendFile('client/groups.html', { root: '../' })
 })

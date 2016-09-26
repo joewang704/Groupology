@@ -71,7 +71,7 @@ layer.selectAll("rect")
             return y(d.y0) - y(d.y + d.y0);
         })
         .attr("width", x.rangeBand())
-			.on("mouseover", function(d, i){return tooltip.style("visibility", "visible").text(d.q + " " + (100.0 * d.y)/d.f + "%");})
+			.on("mouseover", function(d, i){return tooltip.style("visibility", "visible").text(d.q + " " + (100.0 * d.y)/(y(d.y0) - y(d.y + d.y0)) + "%");})
 			.on("mousemove", function(d){return tooltip.style("top", (event.pageY-10)+"px").style("left",(event.pageX+10)+"px").text(d.q + " " + (100.0 * d.y)/d.f + "%");})
 			.on("mouseout", function(d){return tooltip.style("visibility", "hidden");})
 
