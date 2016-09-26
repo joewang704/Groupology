@@ -20,7 +20,7 @@ app.use(bodyParser.json())
 
 app.get('/', (req, res) => {
   //res.sendFile('client/entry.html', { root: '../' })
-  res.redirect('/static/client/entry.html')
+  res.redirect('/static/entry.html')
 })
 
 app.get('/verify', (req, res) => {
