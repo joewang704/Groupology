@@ -29,7 +29,8 @@ exports.plotDensity = function(messages) {
         return names.indexOf(item) == pos;
   })
   var namesMap = {}
-  messages.forEach(({ name }) => {
+  messages.forEach((msg) => {
+    const name = msg.name
     namesMap[name] = namesMap[name] === undefined ? 1 : namesMap[name] + 1
   })
 
