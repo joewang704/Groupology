@@ -101,9 +101,6 @@ exports.findLovers = function(messages, members) {
   //const userId2 = maxKey.substring(maxKey.length / 2)
   const userId1 = maxKey.split(',')[0]
   const userId2 = maxKey.split(',')[1]
-  console.log(maxKey)
-  console.log(userId1)
-  console.log(userId2)
   if (userId1 && userId2) {
     return [{
       user_id: userId1,
