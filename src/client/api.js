@@ -2,6 +2,10 @@ $(document).ready(() => {
   getData()
 })
 
+//var url = 'http://localhost:8069/data'
+//var url = 'https://8aeddd2c.ngrok.io/data'
+var url = 'https://groupology.herokuapp.com/data'
+
 function modifyImages() {
   $('img').each(function(){
     const img = $(this)
@@ -17,8 +21,12 @@ function getData() {
   $.ajax({
     dataType: 'json',
     method: 'GET',
+    xhrFields: {
+      withCredentials:true
+    },
     //url: 'http://localhost:8080/data',
-    url: 'https://8aeddd2c.ngrok.io/data',
+    //url: 'https://8aeddd2c.ngrok.io/data',
+    url,
     success: (data) => {
       console.log(data)
       const { lovers, participants, extremeTimePeople, popularPeople, density } = data

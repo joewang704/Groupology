@@ -1,22 +1,24 @@
 'use strict'
 const express = require('express')
 const bodyParser = require('body-parser')
+const cookieParser = require('cookie-parser')
 const api = require('./api.js')
 const nlp = require('./nlp.js')
 const nlp2 = require('./nlp2.js')
 const moment = require('moment')
 
 const app = express()
-const portNum = process.env.PORT || 8080
-const oauthRedirectUrl = 'https://oauth.groupme.com/oauth/authorize?client_id=uxVzcYmmBXf1m7PYV5STjIC6CcCstX3haxx9hyZOcCJ3MStp'
+const portNum = process.env.PORT || 8069
+const clientId = 'uxVzcYmmBXf1m7PYV5STjIC6CcCstX3haxx9hyZOcCJ3MStp'
+const oauthRedirectUrl = 'https://oauth.groupme.com/oauth/authorize?client_id=' + clientId
 
-let token
 let groupId
 
 app.set('view engine', 'html')
 
 app.use('/static', express.static(__dirname + '/../client'))
 app.use(bodyParser.json())
+app.use(cookieParser())
 
 app.get('/', (req, res) => {
   //res.sendFile('client/entry.html', { root: '../' })
@@ -24,12 +26,12 @@ app.get('/', (req, res) => {
 })
 
 app.get('/verify', (req, res) => {
-  token = req.query.access_token
+  res.cookie('token', req.query.access_token)
   res.redirect('/static/groups.html')
 })
 
 app.get('/data', (req, res) => {
-  console.log(token)
+  const token = req.cookies.token
   api.getMembers(token, groupId).then((members) => {
     api.getMessages(token, groupId).then((messages) => {
       res.send({
@@ -44,6 +46,7 @@ app.get('/data', (req, res) => {
 })
 
 app.get('/groups', (req, res) => {
+  const token = req.cookies.token
   api.getGroups(token).then((groups) => {
     res.send(groups)
   })
