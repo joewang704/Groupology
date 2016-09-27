@@ -101,15 +101,17 @@ exports.findLovers = function(messages, members) {
   //const userId2 = maxKey.substring(maxKey.length / 2)
   const userId1 = maxKey.split(',')[0]
   const userId2 = maxKey.split(',')[1]
-  if (userId1 && userId2) {
+  const member1 = members.find((member) => member.user_id === userId1)
+  const member2 = members.find((member) => member.user_id === userId2)
+  if (userId1 && userId2 && member1 && member2) {
     return [{
       user_id: userId1,
-      name: members.find((member) => member.user_id === userId1).nickname,
-      img: members.find((member) => member.user_id === userId1).image_url
+      name: member1.nickname,
+      img: member1.image_url,
     }, {
       user_id: userId2,
-      name: members.find((member) => member.user_id === userId2).nickname,
-      img: members.find((member) => member.user_id === userId2).image_url
+      name: member2.nickname,
+      img: member2.image_url,
     }]
   }
   return [{
