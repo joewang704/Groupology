@@ -36,9 +36,6 @@ exports.plotDensity = function(messages) {
 
   var namesList = Object.keys(namesMap).sort((key) => namesMap[key])
 
-  console.log(JSON.stringify(namesMap))
-  console.log(JSON.stringify(namesList))
-
   //initialize
   var stackedData = []
   for (var i = 0; i < 24; i++) {
