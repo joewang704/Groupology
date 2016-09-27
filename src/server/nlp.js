@@ -4,6 +4,20 @@ const MINUTE_LENGTH = 30
 const moment = require('moment')
 const sentiment = require('sentiment')
 
+exports.mostFavorited = function(messages) {
+  var max = 0
+  var toRet
+  messages.forEach((msg) => {
+    if (msg['favorited_by'].length > max) {
+      max = msg['favorited_by'].length
+      toRet = msg
+    }})
+  return {
+    msg: toRet,
+    count: max
+  }
+}
+
 exports.measureParticipants = function(messages, members) {
   messages.forEach((element) => {
     if (!isNaN(element['sender_id']) && element['sender_id']) {
@@ -22,68 +36,66 @@ exports.measureParticipants = function(messages, members) {
 exports.plotDensity = function(messages) {
   //get earliest and latest times
   var times = messages.map(function(msg) {return msg['created_at']})
-  var names = messages.map(function(msg) {return msg['name']})
   var earliest = moment.unix(Math.min.apply(null, times))
   var latest = moment.unix(Math.max.apply(null, times))
-  names = names.filter(function(item, pos) {
-        return names.indexOf(item) == pos;
-  })
   var namesMap = {}
   messages.forEach((msg) => {
-    const name = msg.name
-    namesMap[name] = namesMap[name] === undefined ? 1 : namesMap[name] + 1
-  })
+    if (msg['name'] !== 'GroupMe') {
+      const name = msg.name
+      namesMap[name] = namesMap[name] === undefined ? 1 : namesMap[name] + 1
+    }})
 
   var namesList = Object.keys(namesMap).sort((key) => namesMap[key])
-
-  console.log(JSON.stringify(namesMap))
-  console.log(JSON.stringify(namesList))
+  var countList = []
+  for (var key in namesMap) {
+    countList.push(namesMap[key])
+  }
+  countList.sort()
+  namesList = namesList.filter(function(item, pos) {
+        return namesList.indexOf(item) == pos;
+  })
+  var sortedMap = []
+  countList.forEach(function (value, i) {
+      sortedMap.push({'label': namesList[i], 'value':i})
+  })
 
   //initialize
   var stackedData = []
   for (var i = 0; i < 24; i++) {
     var toAdd = {}
-    names.forEach((name) => {
+    namesList.forEach((name) => {
       var curr = {[name] : 0}
       Object.assign(toAdd, curr)
     })
     var currHour = {'hour': hourConverter(i)}
     Object.assign(currHour, toAdd)
-    var totNum = {'tot' : messages.length}
+    if (i == 12) {
+      console.log(messagesAt(i, messages))
+    }
+    var totNum = {'tot' : (messagesAt(i, messages))}
     Object.assign(currHour, totNum)
     stackedData.push(currHour)
   }
 
-
+  var countSystem = 0
   messages.forEach((msg) => {
     var hour = parseInt(moment.unix(msg['created_at']).format("HH"))
     var name = msg['name']
     stackedData[hour][name] += 1
+    if (msg['system'] == true) {
+      countSystem++;
+    }
   })
-
-  //find number of bins
-  var hours = latest.diff(earliest, 'hours')
-  var days = latest.diff(earliest, 'days')
-  var months = latest.diff(earliest, 'months')
 
   return {
       names: namesList,
+      sortedNames: sortedMap,
       toPlot: stackedData,
-      length: messages.length,
+      length: messages.length - countSystem,
     }
   }
 
 
-function hourConverter(hh) {
-  var num = parseInt(hh)
-  if (num > 12) {
-    return (num - 12) + ":00 PM"
-  } else if (num == 0) {
-    return "12:00 AM"
-  } else {
-    return hh + ":00 AM"
-  }
-}
 exports.findLovers = function(messages, members) {
   //compare messages for each member, make adj list for convos between users
   const frequentConvos = logFrequentChatPairs(messages, members)
@@ -248,6 +260,33 @@ exports.findMostPopular = function(messages, members) {
     }
   }
 
+}
+
+function messagesAt(i, messages) {
+  var count = 0
+  messages.forEach((msg) => {
+    if (msg['name'] !== 'GroupMe') {
+      var hour = parseInt(moment.unix(msg['created_at']).format("HH"))
+      if (hour == i) {
+        count++
+      }
+    }})
+  return count
+}
+
+
+
+function hourConverter(hh) {
+  var num = parseInt(hh)
+  if (num > 12) {
+    return (num - 12) + ":00 PM"
+  } else if (num == 0) {
+    return "12:00 AM"
+  } else if (num == 12) {
+    return "12:00 PM"
+  } else {
+    return hh + ":00 AM"
+  }
 }
 
 

@@ -25,7 +25,7 @@ function getData() {
     url: endpoint,
     success: (data) => {
       console.log(data)
-      const { lovers, participants, extremeTimePeople, popularPeople, density } = data
+      const { lovers, participants, extremeTimePeople, popularPeople, density, favorited} = data
       let max = -1
       let maxParticipant
       participants.forEach((user) => {
@@ -159,6 +159,12 @@ function getData() {
           <div class="center">
             ${extremeTimePeople.nightOwl.name || 'None'}
           </div>
+          <div class = "space-top">
+            ${'JOE FIX THIS THX'}
+            ${"BY:" + favorited.msg.name|| 'None'}
+            ${"SAID:" + favorited.msg.text || 'None'}
+            ${"FAVS:" + favorited.count || 'None'}
+          </div>
         </div>
         </div>
         </div>
@@ -167,11 +173,11 @@ function getData() {
         if (participants[key].count) {
           acc.push({
             label: participants[key].nickname,
-            value: participants[key].count / density.length * 100.0,
+            value: Math.floor(participants[key].count / density.length * 100.0),
           })
         }
         return acc
-      }, []))
+      }, []), density.sortedNames)
       changeHist(density)
       setTimeout(modifyImages, 200)
     },

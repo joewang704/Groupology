@@ -42,6 +42,7 @@ app.get('/data', (req, res) => {
         participants: nlp.measureParticipants(messages, members),
         extremeTimePeople: nlp.extremeTimePeople(messages),
         density: nlp.plotDensity(messages),
+        favorited: nlp.mostFavorited(messages),
         popularPeople: nlp.findMostPopular(messages, members),
       })
     })

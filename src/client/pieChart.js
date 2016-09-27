@@ -44,12 +44,14 @@ var color = d3.scale.category20()
 
 
 
-function change(data) {
+function change(data, sortedData) {
   apples = []
   oranges = []
   names = {}
+  console.log(data)
+  console.log(sortedData)
 
-  data.forEach((member) => {
+  sortedData.forEach((member) => {
         apples.push(1)
         oranges.push(member.value)
         if (!names[member.value]) {
