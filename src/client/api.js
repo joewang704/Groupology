@@ -80,7 +80,7 @@ function getData() {
                 <div class="icon-mask">
                   <img src="${lovers[0].img || 'http://style.anu.edu.au/_anu/4/images/placeholders/person.png'}"></img>
                 </div>
-                <div class="center">${lovers[0].name}</div>
+                <div class="center">${lovers[0].name || 'None :('}</div>
               </div>
               <div class="heart" style="margin: 20px;">
                 <i class="heart fa fa-heart" aria-hidden="true"></i>
@@ -89,7 +89,7 @@ function getData() {
                 <div class="icon-mask">
                   <img src="${lovers[1].img || 'http://style.anu.edu.au/_anu/4/images/placeholders/person.png'}"></img>
                 </div>
-                <div class="center">${lovers[1].name}</div>
+                <div class="center">${lovers[1].name || 'None :('}</div>
               </div>
             </div>
           </div>

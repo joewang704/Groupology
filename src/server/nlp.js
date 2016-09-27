@@ -104,14 +104,25 @@ exports.findLovers = function(messages, members) {
   console.log(maxKey)
   console.log(userId1)
   console.log(userId2)
+  if (userId1 && userId2) {
+    return [{
+      user_id: userId1,
+      name: members.find((member) => member.user_id === userId1).nickname,
+      img: members.find((member) => member.user_id === userId1).image_url
+    }, {
+      user_id: userId2,
+      name: members.find((member) => member.user_id === userId2).nickname,
+      img: members.find((member) => member.user_id === userId2).image_url
+    }]
+  }
   return [{
-    user_id: userId1,
-    name: members.find((member) => member.user_id === userId1).nickname,
-    img: members.find((member) => member.user_id === userId1).image_url
+    user_id: null,
+    name: null,
+    img: null,
   }, {
-    user_id: userId2,
-    name: members.find((member) => member.user_id === userId2).nickname,
-    img: members.find((member) => member.user_id === userId2).image_url
+    user_id: null,
+    name: null,
+    img: null,
   }]
 }
 
