@@ -24,7 +24,6 @@ function getData() {
     },
     url: endpoint,
     success: (data) => {
-      console.log(data)
       const { lovers, participants, extremeTimePeople, popularPeople, density, favorited} = data
       let max = -1
       let maxParticipant

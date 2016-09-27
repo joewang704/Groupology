@@ -48,25 +48,20 @@ function change(data, sortedData) {
   apples = []
   oranges = []
   names = {}
-  console.log("DALSKDJFALKSD")
-  console.log(data)
-  console.log("SORTED DATA")
-  console.log(sortedData)
 
 
 
   sortedData.forEach((member) => {
-    member.percentage = data.find((oldMember) => oldMember.label === member.label).value
+    member.value = data.find((oldMember) => oldMember.label === member.label).value
   })
 
   sortedData.forEach((member) => {
         apples.push(1)
-        console.log(member)
-        oranges.push(member.percentage)
-        if (!names[member.percentage]) {
-          names[member.percentage] = []
+        oranges.push(member.value)
+        if (!names[member.value]) {
+          names[member.value] = []
         }
-        names[member.percentage].push(member.label)
+        names[member.value].push(member.label)
     })
   apples.push(2000)
   dataset = {
