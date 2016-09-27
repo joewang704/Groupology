@@ -138,36 +138,43 @@ function getData() {
           </div>
         </div>
         <div class="icon-row">
-        <div class="space-top">
-          <div class="user center">
-            EARLY BIRD
+          <div class="space-top">
+            <div class="user center">
+              EARLY BIRD
+            </div>
+            <div class="icon-mask">
+              <img class="icon-resize" src="${extremeTimePeople.earlyBird.img || 'http://style.anu.edu.au/_anu/4/images/placeholders/person.png'}"></img>
+            </div>
+            <div class="center">
+              ${extremeTimePeople.earlyBird.name || 'None'}
+            </div>
           </div>
-          <div class="icon-mask">
-            <img class="icon-resize" src="${extremeTimePeople.earlyBird.img || 'http://style.anu.edu.au/_anu/4/images/placeholders/person.png'}"></img>
-          </div>
-          <div class="center">
-            ${extremeTimePeople.earlyBird.name || 'None'}
+          <div class="space-top">
+            <div class="user center">
+              NIGHT OWL
+            </div>
+            <div class="icon-mask">
+              <img class="icon-resize" src="${extremeTimePeople.nightOwl.img || 'http://style.anu.edu.au/_anu/4/images/placeholders/person.png'}"></img>
+            </div>
+            <div class="center">
+              ${extremeTimePeople.nightOwl.name || 'None'}
+            </div>
           </div>
         </div>
-        <div class="space-top">
-          <div class="user center">
-            NIGHT OWL
-          </div>
-          <div class="icon-mask">
-            <img class="icon-resize" src="${extremeTimePeople.nightOwl.img || 'http://style.anu.edu.au/_anu/4/images/placeholders/person.png'}"></img>
-          </div>
-          <div class="center">
-            ${extremeTimePeople.nightOwl.name || 'None'}
-          </div>
+        <div class="icon-row">
           <div class = "space-top">
-            ${'JOE FIX THIS THX'}
-            ${"BY:" + favorited.msg.name|| 'None'}
-            ${"SAID:" + favorited.msg.text || 'None'}
-            ${"FAVS:" + favorited.count || 'None'}
+            <div class="user center">
+              MOST LIKED RECENT COMMENT
+            </div>
+            <p class="triangle-isosceles">${favorited.msg.text}</p>
+            <div style="font-size: 12px; color: #aaa;">
+              Sent by ${favorited.msg.name || 'GroupMe'}
+              <i class="fa fa-heart" aria-hidden="true" style="color: red;"></i>
+              ${favorited.count || 'None'}
+            </div>
           </div>
         </div>
-        </div>
-        </div>
+      </div>
       `)
       change(Object.keys(participants).reduce((acc, key) => {
         if (participants[key].count) {

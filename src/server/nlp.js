@@ -69,9 +69,6 @@ exports.plotDensity = function(messages) {
     })
     var currHour = {'hour': hourConverter(i)}
     Object.assign(currHour, toAdd)
-    if (i == 12) {
-      console.log(messagesAt(i, messages))
-    }
     var totNum = {'tot' : (messagesAt(i, messages))}
     Object.assign(currHour, totNum)
     stackedData.push(currHour)

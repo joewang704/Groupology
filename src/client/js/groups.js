@@ -1,7 +1,3 @@
-$(document).ready(() => {
-  getGroups()
-})
-
 var endpoint = '/groups'
 
 function accessGroup(groupId) {

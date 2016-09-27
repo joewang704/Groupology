@@ -1,0 +1,22 @@
+.triangle-isosceles {
+  position:relative;
+  padding:15px;
+  color: #fff;
+  background-color: #0094ff;
+  -webkit-border-radius:10px;
+  -moz-border-radius:10px;
+  border-radius:10px;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+}
+
+.triangle-isosceles:after {
+  content:"";
+  position:absolute;
+  bottom:-15px; /* value = - border-top-width - border-bottom-width */
+  left:50px; /* controls horizontal position */
+  border-width:15px 15px 0; /* vary these values to change the angle of the vertex */
+  border-style:solid;
+  border-color: #0094ff transparent;
+  display:block;
+  width:0;
+}

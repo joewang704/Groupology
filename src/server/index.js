@@ -11,8 +11,6 @@ const portNum = process.env.PORT || 8069
 const clientId = 'Gb8DfWXvG4KDMz8NywlRyVXOmXMmEN6pzolJNexOP4dh0klg'
 const oauthRedirectUrl = 'https://oauth.groupme.com/oauth/authorize?client_id=' + clientId
 
-let groupId
-
 app.set('views', __dirname + '/../client/views')
 app.engine('html', require('ejs').renderFile)
 app.set('view engine', 'ejs');
@@ -35,6 +33,7 @@ app.get('/verify', (req, res) => {
 
 app.get('/data', (req, res) => {
   const token = req.cookies.token
+  const groupId = req.cookies.groupId
   api.getMembers(token, groupId).then((members) => {
     api.getMessages(token, groupId).then((messages) => {
       res.send({
@@ -57,7 +56,7 @@ app.get('/groups', (req, res) => {
 })
 
 app.post('/groups', (req, res) => {
-  groupId = req.body.groupId
+  res.cookie('groupId', req.body.groupId)
   res.send({
     auth: true
   })
