@@ -9,7 +9,8 @@ const moment = require('moment')
 
 const app = express()
 const portNum = process.env.PORT || 8069
-const clientId = 'uxVzcYmmBXf1m7PYV5STjIC6CcCstX3haxx9hyZOcCJ3MStp'
+//const clientId = 'uxVzcYmmBXf1m7PYV5STjIC6CcCstX3haxx9hyZOcCJ3MStp'
+const clientId = 'Gb8DfWXvG4KDMz8NywlRyVXOmXMmEN6pzolJNexOP4dh0klg'
 const oauthRedirectUrl = 'https://oauth.groupme.com/oauth/authorize?client_id=' + clientId
 
 let groupId
