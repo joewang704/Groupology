@@ -180,7 +180,7 @@ function getData() {
         if (participants[key].count) {
           acc.push({
             label: participants[key].nickname,
-            value: Math.floor(participants[key].count / density.length * 100.0),
+            value: participants[key].percentage
           })
         }
         return acc

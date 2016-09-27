@@ -30,6 +30,13 @@ exports.measureParticipants = function(messages, members) {
       }
     }
   })
+  let totalCount = 0
+  members.forEach((member) => {
+    totalCount += member.count
+  })
+  members.forEach((member) => {
+    member.percentage = Math.round((member.count * 100) / (totalCount))
+  })
   return members
 }
 
