@@ -48,11 +48,13 @@ function change(data, sortedData) {
   apples = []
   oranges = []
   names = {}
-
-
-
   sortedData.forEach((member) => {
-    member.value = data.find((oldMember) => oldMember.label === member.label).value
+    unsortedMember = data.find((oldMember) => oldMember.label === member.label)
+    if (!(unsortedMember && unsortedMember.value)) {
+      member.value = 1 
+    } else {
+      member.value = unsortedMember.value
+    }
   })
 
   sortedData.forEach((member) => {
