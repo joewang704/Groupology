@@ -4,31 +4,33 @@ const bodyParser = require('body-parser')
 const cookieParser = require('cookie-parser')
 const api = require('./api.js')
 const nlp = require('./nlp.js')
-const nlp2 = require('./nlp2.js')
 const moment = require('moment')
 
 const app = express()
 const portNum = process.env.PORT || 8069
-//const clientId = 'uxVzcYmmBXf1m7PYV5STjIC6CcCstX3haxx9hyZOcCJ3MStp'
 const clientId = 'Gb8DfWXvG4KDMz8NywlRyVXOmXMmEN6pzolJNexOP4dh0klg'
 const oauthRedirectUrl = 'https://oauth.groupme.com/oauth/authorize?client_id=' + clientId
 
 let groupId
 
-app.set('view engine', 'html')
+app.set('views', __dirname + '/../client/views')
+app.engine('html', require('ejs').renderFile)
+app.set('view engine', 'ejs');
 
 app.use('/static', express.static(__dirname + '/../client'))
 app.use(bodyParser.json())
 app.use(cookieParser())
 
 app.get('/', (req, res) => {
-  //res.sendFile('client/entry.html', { root: '../' })
-  res.redirect('/static/entry.html')
+  res.render('entry')
 })
 
 app.get('/verify', (req, res) => {
-  res.cookie('token', req.query.access_token)
-  res.redirect('/static/groups.html')
+  const token = req.query.access_token
+  res.cookie('token', token)
+  api.getGroups(token).then((groups) => {
+    res.render('groups', { groups })
+  })
 })
 
 app.get('/data', (req, res) => {
@@ -38,7 +40,7 @@ app.get('/data', (req, res) => {
       res.send({
         lovers: nlp.findLovers(messages, members),
         participants: nlp.measureParticipants(messages, members),
-        extremeTimePeople: nlp2.extremeTimePeople(messages),
+        extremeTimePeople: nlp.extremeTimePeople(messages),
         density: nlp.plotDensity(messages),
         popularPeople: nlp.findMostPopular(messages, members),
       })

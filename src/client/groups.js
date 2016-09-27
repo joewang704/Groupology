@@ -2,16 +2,13 @@ $(document).ready(() => {
   getGroups()
 })
 
-//var url = 'http://localhost:8069/groups'
-//var url = 'https://8aeddd2c.ngrok.io/groups'
-var url = 'https://groupology.herokuapp.com/groups'
+var endpoint = '/groups'
 
 function getGroups() {
   $.ajax({
     dataType: 'json',
     method: 'GET',
-    url,
-    //url: 'https://8aeddd2c.ngrok.io/groups',
+    url: endpoint,
     success: (groups) => {
       const html = groups.reduce((acc, group) => {
         return acc + `
@@ -33,8 +30,7 @@ function accessGroup(groupId) {
       groupId,
     }),
     contentType: 'application/json',
-    url,
-    //url: 'https://8aeddd2c.ngrok.io/groups',
+    url: endpoint,
     success: (res) => {
       if (res.auth) {
         $(location).attr('href', '/static/index.html')
