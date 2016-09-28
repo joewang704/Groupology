@@ -18,3 +18,4 @@
 - [ ] Handle edge case with only one person in group (no love birds)
 - [x] Handle edge case of group with no chats yet
 - [ ] Resizing problems on mobile
+- [ ] If most liked recent message is an image, will show empty text field
