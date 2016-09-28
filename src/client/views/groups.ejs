@@ -17,9 +17,10 @@
 </head>
 <body>
   <div id="container" style="height:100%;">
+    <div id="topbar" class="flex-column vcenter center"><h1>Groups</h1></div>
     <div id="content" class="flex-column vcenter center">
       <% groups.forEach(function(group) { %>
-        <div style="cursor: pointer" onClick="accessGroup(<%=group.id%>)" ><%=group.name%></div>
+        <div class="group" style="cursor: pointer" onClick="accessGroup(<%=group.id%>)" ><%=group.name%></div>
       <% }) %>
     </div>
   </div>

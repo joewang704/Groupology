@@ -3,6 +3,8 @@ body {
   width: 100%;
   font-family: 'Open Sans';
   color: #333;
+  margin: 0px;
+  padding: 0px;
 }
 
 #container {
@@ -142,4 +144,27 @@ polyline{
 
 #graphs {
   font-weight: bold;
+}
+
+.group {
+  padding :10px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  background-color: white;
+  border: 1px solid gray;
+  border-radius: 10px;
+  box-shadow: 0px 2px 5px rgba(0,0,0,.2);
+}
+
+.group:hover {
+  background-color:dodgerblue;
+  color: white;
+}
+
+#topbar {
+  color: white;
+  background-color: dodgerblue;
+  width: 100%;
+  box-shadow: 0px 3px 5px rgba(0,0,0,.2);
+  margin-bottom: 10px;
 }
