@@ -1,3 +1,4 @@
+"use strict"
 const request = require('request-promise')
 
 const getMessages = (token, groupId) =>
@@ -8,7 +9,7 @@ const getMessages = (token, groupId) =>
       limit: 100,
     },
     json: 'true',
-  }).then((res) => res.response.messages.filter((({ system }) => !system)))
+  }).then((res) => res.response.messages.filter(((msg) => !msg.system)))
 
 const getMembers = (token, groupId) =>
   request({
