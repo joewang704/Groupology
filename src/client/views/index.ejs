@@ -217,13 +217,15 @@
     })
 
     function modifyImages() {
-      $('img').each(function(){
-        const img = $(this)
-        if (img.get(0).naturalWidth > img.get(0).naturalHeight) {
-          img.attr('class', 'icon-resize-wide')
-        } else {
-          img.attr('class', 'icon-resize-tall')
-        }
+      $('img').each(function() {
+        $(this).on('load', function() {
+          var img = $(this)
+          if (img.get(0).naturalWidth > img.get(0).naturalHeight) {
+            img.attr('class', 'icon-resize-wide')
+          } else {
+            img.attr('class', 'icon-resize-tall')
+          }
+        })
       })
     }
   </script>

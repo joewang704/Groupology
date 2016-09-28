@@ -14,7 +14,7 @@
 - [x] Most liked recent message
 
 ## Bugs that need fixing
-- [ ] Images still sometimes do not get cropped properly (blue circle shows up)
+- [x] Images still sometimes do not get cropped properly (blue circle shows up)
 - [ ] Handle edge case with only one person in group (no love birds)
 - [x] Handle edge case of group with no chats yet
 - [ ] Resizing problems on mobile
