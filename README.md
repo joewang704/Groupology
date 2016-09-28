@@ -9,6 +9,8 @@
 - [ ] Share button to share website with current group you're viewing
 - [ ] Live chat feed
 - [ ] Most common phrase/word algorithm
+- [ ] Groupology/predictability score
+- [ ] Determining type of group (business, casual, etc.)
 - [x] Most liked recent message
 
 ## Bugs that need fixing
