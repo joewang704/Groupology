@@ -31,6 +31,23 @@ app.get('/verify', (req, res) => {
   })
 })
 
+app.get('/dataPage', (req, res) => {
+  const token = req.cookies.token
+  const groupId = req.cookies.groupId
+  api.getMembers(token, groupId).then((members) => {
+    api.getMessages(token, groupId).then((messages) => {
+      res.render('index', {
+        lovers: nlp.findLovers(messages, members),
+        participants: nlp.measureParticipants(messages, members),
+        extremeTimePeople: nlp.extremeTimePeople(messages),
+        density: nlp.plotDensity(messages),
+        favorited: nlp.mostFavorited(messages),
+        popularPeople: nlp.findMostPopular(messages, members),
+      })
+    })
+  })
+})
+
 app.get('/data', (req, res) => {
   const token = req.cookies.token
   const groupId = req.cookies.groupId
@@ -67,3 +84,4 @@ app.listen(portNum, () => {
     console.log('Serving port number ' + portNum)
   }
 })
+

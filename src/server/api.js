@@ -8,7 +8,7 @@ const getMessages = (token, groupId) =>
       limit: 100,
     },
     json: 'true',
-  }).then((res) => res.response.messages)
+  }).then((res) => res.response.messages.filter((({ system }) => !system)))
 
 const getMembers = (token, groupId) =>
   request({

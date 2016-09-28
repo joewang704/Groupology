@@ -11,7 +11,7 @@ function accessGroup(groupId) {
     url: endpoint,
     success: (res) => {
       if (res.auth) {
-        $(location).attr('href', '/static/index.html')
+        $(location).attr('href', '/dataPage')
       }
     }
   })

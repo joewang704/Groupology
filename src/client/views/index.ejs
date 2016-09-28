@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html>
+  <style>
+    .arc:hover {
+      fill: brown;
+    }
+    .d3-tip {
+      line-height: 1;
+      font-weight: bold;
+      padding: 12px;
+      background: rgba(0, 0, 0, 0.8);
+      color: #fff;
+      border-radius: 2px;
+    }
+
+    /* Creates a small triangle extender for the tooltip */
+    .d3-tip:after {
+      box-sizing: border-box;
+      display: inline;
+      font-size: 10px;
+      width: 100%;
+      line-height: 1;
+      color: rgba(0, 0, 0, 0.8);
+      content: "\25BC";
+      position: absolute;
+      text-align: center;
+    }
+
+    /* Style northward tooltips differently */
+    .d3-tip.n:after {
+      margin: -1px 0 0 0;
+      top: 100%;
+      left: 0;
+    }
+  </style>
+
+<head>
+  <link rel="stylesheet" type="text/css" href="/static/styles/style.css">
+  <link rel="stylesheet" type="text/css" href="/static/styles/chat-bubble.css">
+  <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css">
+  <link href="https://fonts.googleapis.com/css?family=Raleway:800" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+  <script src="https://d3js.org/d3.v3.min.js"></script>
+  <script src="/static/js/tooltip.js"></script>
+</head>
+<body>
+  <div id="container" class="flex-column">
+    <div id="firstRow" class="flex-row">
+        <div class="flex-column" style="justify-content: center; width: 30%">
+          <div class="icon-row">
+            <div class="space-top">
+              <div class="user center">
+                MOST TALKATIVE
+              </div>
+              <div class="icon-mask">
+                <img class="icon-resize"
+                  src="<%= participants.reduce((prev, curr) => curr.count > prev.count ? curr : prev, { count: -1 }).image_url %>"></img>
+              </div>
+              <div class="center">
+                <%= participants.reduce((prev, curr) => curr.count > prev.count ? curr : prev, { count: -1 }).nickname %>
+              </div>
+            </div>
+          <div class="space-top">
+            <div class="user center">
+              MOST POPULAR
+            </div>
+            <div class="icon-mask">
+              <img class="icon-resize" src="<%= popularPeople.popular.img %>"></img>
+            </div>
+            <div class="center">
+              <%= popularPeople.popular.name %>
+            </div>
+          </div>
+          </div>
+          <div class="space-top">
+            <div class="user center">
+              SECRETLY DATING
+            </div>
+            <div class="flex-row">
+              <div>
+                <div class="icon-mask">
+                  <img src="<%= lovers[0].img || 'http://style.anu.edu.au/_anu/4/images/placeholders/person.png' %>"></img>
+                </div>
+                <div class="center"><%= lovers[0].name || 'None :(' %></div>
+              </div>
+              <div class="heart" style="margin: 20px;">
+                <i class="heart fa fa-heart" aria-hidden="true"></i>
+              </div>
+              <div>
+                <div class="icon-mask">
+                  <img src="<%= lovers[1].img || 'http://style.anu.edu.au/_anu/4/images/placeholders/person.png' %>"></img>
+                </div>
+                <div class="center"><%= lovers[1].name || 'None :(' %></div>
+              </div>
+            </div>
+          </div>
+          <div class="icon-row">
+            <div class="space-top">
+              <div class="user center">
+                MOST LIKED
+              </div>
+              <div class="icon-mask">
+                <img class="icon-resize" src="<%= popularPeople.liked.img || 'http://style.anu.edu.au/_anu/4/images/placeholders/person.png' %>"></img>
+              </div>
+              <div class="center">
+                <%= popularPeople.liked.name %>
+              </div>
+            </div>
+            <div class="space-top">
+              <div class="user center">
+                MOST BULLIED
+              </div>
+              <div class="icon-mask">
+                <img class="icon-resize" src="<%= popularPeople.hated.img || 'http://style.anu.edu.au/_anu/4/images/placeholders/person.png' %>"></img>
+              </div>
+              <div class="center">
+                <%= popularPeople.hated.name %>
+              </div>
+            </div>
+          </div>
+        <div class="icon-row">
+          <div class="space-top">
+            <div class="user center">
+              HAPPIEST
+            </div>
+            <div class="icon-mask">
+              <img class="icon-resize" src="<%= popularPeople.happy.img || 'http://style.anu.edu.au/_anu/4/images/placeholders/person.png' %>"></img>
+            </div>
+            <div class="center">
+              <%= popularPeople.happy.name %>
+            </div>
+          </div>
+          <div class="space-top">
+            <div class="user center">
+              SADDEST
+            </div>
+            <div class="icon-mask">
+              <img class="icon-resize" src="<%= popularPeople.sad.img || 'http://style.anu.edu.au/_anu/4/images/placeholders/person.png' %>"></img>
+            </div>
+            <div class="center">
+              <%= popularPeople.sad.name %>
+            </div>
+          </div>
+        </div>
+        <div class="icon-row">
+          <div class="space-top">
+            <div class="user center">
+              EARLY BIRD
+            </div>
+            <div class="icon-mask">
+              <img class="icon-resize" src="<%= extremeTimePeople.earlyBird.img || 'http://style.anu.edu.au/_anu/4/images/placeholders/person.png' %>"></img>
+            </div>
+            <div class="center">
+              <%= extremeTimePeople.earlyBird.name || 'None' %>
+            </div>
+          </div>
+          <div class="space-top">
+            <div class="user center">
+              NIGHT OWL
+            </div>
+            <div class="icon-mask">
+              <img class="icon-resize" src="<%= extremeTimePeople.nightOwl.img || 'http://style.anu.edu.au/_anu/4/images/placeholders/person.png' %>"></img>
+            </div>
+            <div class="center">
+              <%= extremeTimePeople.nightOwl.name || 'None' %>
+            </div>
+          </div>
+        </div>
+        <% if (favorited.msg) { %>
+          <div class="icon-row">
+            <div class = "space-top">
+              <div class="user center">
+                MOST LIKED RECENT COMMENT
+              </div>
+              <p class="triangle-isosceles"><%= favorited.msg.text %></p>
+              <div style="font-size: 12px; color: #aaa;">
+                Sent by <%= favorited.msg.name || GroupMe %>
+                <i class="fa fa-heart" aria-hidden="true" style="color: red;"></i>
+                <%= favorited.count || 0 %>
+              </div>
+            </div>
+          </div>
+        <% } %>
+      </div>
+      <div id="graphs" class="flex-column" style="justify-content: center">
+        <div id="pieChart" class="space-top" style="margin-bottom: 150px"></div>
+      </div>
+    </div>
+  </div>
+  <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+  <script src="/static/js/histo.js"></script>
+  <script src="/static/js/pieChart.js"></script>
+	<script>
+		(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+		(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+		m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+		})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+		ga('create', 'UA-84832530-1', 'auto');
+		ga('send', 'pageview');
+	</script>
+  <script>
+    $(document).ready(() => {
+      modifyImages()
+      var participants = <%- JSON.stringify(participants) %>
+      var density = <%- JSON.stringify(density) %>
+      change(Object.keys(participants).reduce((acc, key) => {
+        if (participants[key].count) {
+          acc.push({
+            label: participants[key].nickname,
+            value: participants[key].percentage
+          })
+        }
+        return acc
+      }, []), density.sortedNames)
+      changeHist(density)
+    })
+
+    function modifyImages() {
+      $('img').each(function(){
+        const img = $(this)
+        if (img.get(0).naturalWidth > img.get(0).naturalHeight) {
+          img.attr('class', 'icon-resize-wide')
+        } else {
+          img.attr('class', 'icon-resize-tall')
+        }
+      })
+    }
+  </script>
+</body>
+</html>
