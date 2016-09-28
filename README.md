@@ -5,8 +5,14 @@
 4. `npm run dev`
 5. Go to http://localhost:8069/verify?access_token=your-groupme-token
 
-## Ideas
+## Feature Ideas To Work On
 - [ ] Share button to share website with current group you're viewing
 - [ ] Live chat feed
-- [ ] Most common phrase/word
+- [ ] Most common phrase/word algorithm
 - [x] Most liked recent message
+
+## Bugs that need fixing
+- [ ] Images still sometimes do not get cropped properly (blue circle shows up)
+- [ ] Handle edge case with only one person in group (no love birds)
+- [ ] Handle edge case of group with no chats yet
+- [ ] Resizing problems on mobile
