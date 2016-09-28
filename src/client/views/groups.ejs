@@ -19,10 +19,14 @@
   <div id="container" style="height:100%;">
     <div id="topbar" class="flex-column vcenter center"><h1>Groups</h1></div>
     <div id="content" class="flex-column vcenter center">
-      <% groups.forEach(function(group) { %>
+      <% groups.forEach(function(group) {
+            console.log(group); 
+            if (group.messages.last_message_created_at > 0) {
+      %>
         <div class="group" style="cursor: pointer" onClick="accessGroup(<%=group.id%>)" ><%=group.name%></div>
-      <% }) %>
+      <% }}) %>
     </div>
+    <div class="flex-column vcenter center">*Groups with no messages will not be shown.</div>
   </div>
   <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
   <script src="/static/js/groups.js"></script>
