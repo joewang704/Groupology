@@ -7,8 +7,8 @@ function changeHist(d) {
   var xData = names
 
 var dataIntermediate=names.map(function(key,i){
-    return data.map(function(d,j){
-        return {x: d['hour'], y: d[key], q: names[i], f: d['tot']};
+    return data.map(function(d,j) {
+        return {x: d['hour'], y: d[key], q: names[i], f: d['tot']}
     })
 })
 var margin = {top: 20, right: 50, bottom: 30, left: 50},

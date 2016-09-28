@@ -5,11 +5,11 @@ function accessGroup(groupId) {
     dataType: 'json',
     method: 'POST',
     data: JSON.stringify({
-      groupId,
+      groupId: groupId,
     }),
     contentType: 'application/json',
     url: endpoint,
-    success: (res) => {
+    success: function(res) {
       if (res.auth) {
         $(location).attr('href', '/dataPage')
       }

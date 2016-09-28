@@ -48,27 +48,27 @@ function change(data, sortedData) {
   apples = []
   oranges = []
   names = {}
-  sortedData.forEach((member) => {
-    unsortedMember = data.find((oldMember) => oldMember.label === member.label)
+  sortedData.forEach(function(member) {
+    unsortedMember = data.find(function(oldMember) { return oldMember.label === member.label })
     if (!(unsortedMember && unsortedMember.value)) {
-      member.value = 1 
+      member.value = 1
     } else {
       member.value = unsortedMember.value
     }
   })
 
-  sortedData.forEach((member) => {
-        apples.push(1)
-        oranges.push(member.value)
-        if (!names[member.value]) {
-          names[member.value] = []
-        }
-        names[member.value].push(member.label)
-    })
+  sortedData.forEach(function(member) {
+    apples.push(1)
+    oranges.push(member.value)
+    if (!names[member.value]) {
+      names[member.value] = []
+    }
+    names[member.value].push(member.label)
+  })
   apples.push(2000)
   dataset = {
-    apples,
-    oranges
+    apples: apples,
+    oranges: oranges,
   };
 
   var width = 450,
