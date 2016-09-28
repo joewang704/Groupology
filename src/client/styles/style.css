@@ -22,6 +22,7 @@ body {
   width: 100%;
   order: -1;
   justify-content: space-around;
+  -webkit-justify-content: space-around;
 }
 
 .title {
@@ -64,20 +65,42 @@ body {
 
 .flex-row {
   display: flex;
+  display: -webkit-flex;
+  display: -moz-box;
+  display: -ms-flexbox;
   flex-direction: row;
 }
 
 .icon-row {
   display: flex;
-  flex-direction: row;
+  display: -webkit-flex;
   justify-content: space-between;
+	-webkit-box-pack: justify;
+  -moz-box-pack: justify;
+  -ms-flex-pack: justify;
+  -webkit-justify-content: space-between;
   width: 100%;
 }
 
 .flex-column {
   display: flex;
+  display: -webkit-flex;
+  display: -moz-box;
+  display: -ms-flexbox;
   flex-direction: column;
+  -webkit-flex-direction: column;
+}
+
+.vcenter {
   align-items: center;
+  -webkit-align-items: center;
+}
+
+.center {
+  justify-content: center;
+  -webkit-justify-content: center;
+  -moz-justify-content: center;
+  -ms-justify-content: center;
 }
 
 .heart {
@@ -113,7 +136,7 @@ polyline{
 }
 
 /* Helper */
-.center {
+.center-text {
   text-align: center;
 }
 

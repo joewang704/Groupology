@@ -17,7 +17,7 @@
 </head>
 <body>
   <div id="container" style="height:100%;">
-    <div id="content" class="flex-column" style="align-content: center; justify-content: center">
+    <div id="content" class="flex-column vcenter center">
       <% groups.forEach(function(group) { %>
         <div style="cursor: pointer" onClick="accessGroup(<%=group.id%>)" ><%=group.name%></div>
       <% }) %>

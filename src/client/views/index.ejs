@@ -46,34 +46,34 @@
 <body>
   <div id="container" class="flex-column">
     <div id="firstRow" class="flex-row">
-        <div class="flex-column" style="justify-content: center; width: 30%">
+        <div class="flex-column center" style="width: 30%">
           <div class="icon-row">
             <div class="space-top">
-              <div class="user center">
+              <div class="user center-text">
                 MOST TALKATIVE
               </div>
               <div class="icon-mask">
                 <img class="icon-resize"
                      src="<%= participants.reduce(function(prev, curr) { return curr.count > prev.count ? curr : prev }, { count: -1 }).image_url %>"></img>
               </div>
-              <div class="center">
+              <div class="center-text">
                 <%= participants.reduce(function(prev, curr) { return curr.count > prev.count ? curr : prev }, { count: -1 }).nickname %>
               </div>
             </div>
           <div class="space-top">
-            <div class="user center">
+            <div class="user center-text">
               MOST POPULAR
             </div>
             <div class="icon-mask">
               <img class="icon-resize" src="<%= popularPeople.popular.img %>"></img>
             </div>
-            <div class="center">
+            <div class="center-text">
               <%= popularPeople.popular.name %>
             </div>
           </div>
           </div>
           <div class="space-top">
-            <div class="user center">
+            <div class="user center-text">
               SECRETLY DATING
             </div>
             <div class="flex-row">
@@ -81,7 +81,7 @@
                 <div class="icon-mask">
                   <img src="<%= lovers[0].img || 'http://style.anu.edu.au/_anu/4/images/placeholders/person.png' %>"></img>
                 </div>
-                <div class="center"><%= lovers[0].name || 'None :(' %></div>
+                <div class="center-text"><%= lovers[0].name || 'None :(' %></div>
               </div>
               <div class="heart" style="margin: 20px;">
                 <i class="heart fa fa-heart" aria-hidden="true"></i>
@@ -90,78 +90,78 @@
                 <div class="icon-mask">
                   <img src="<%= lovers[1].img || 'http://style.anu.edu.au/_anu/4/images/placeholders/person.png' %>"></img>
                 </div>
-                <div class="center"><%= lovers[1].name || 'None :(' %></div>
+                <div class="center-text"><%= lovers[1].name || 'None :(' %></div>
               </div>
             </div>
           </div>
           <div class="icon-row">
             <div class="space-top">
-              <div class="user center">
+              <div class="user center-text">
                 MOST LIKED
               </div>
               <div class="icon-mask">
                 <img class="icon-resize" src="<%= popularPeople.liked.img || 'http://style.anu.edu.au/_anu/4/images/placeholders/person.png' %>"></img>
               </div>
-              <div class="center">
+              <div class="center-text">
                 <%= popularPeople.liked.name %>
               </div>
             </div>
             <div class="space-top">
-              <div class="user center">
+              <div class="user center-text">
                 MOST BULLIED
               </div>
               <div class="icon-mask">
                 <img class="icon-resize" src="<%= popularPeople.hated.img || 'http://style.anu.edu.au/_anu/4/images/placeholders/person.png' %>"></img>
               </div>
-              <div class="center">
+              <div class="center-text">
                 <%= popularPeople.hated.name %>
               </div>
             </div>
           </div>
         <div class="icon-row">
           <div class="space-top">
-            <div class="user center">
+            <div class="user center-text">
               HAPPIEST
             </div>
             <div class="icon-mask">
               <img class="icon-resize" src="<%= popularPeople.happy.img || 'http://style.anu.edu.au/_anu/4/images/placeholders/person.png' %>"></img>
             </div>
-            <div class="center">
+            <div class="center-text">
               <%= popularPeople.happy.name %>
             </div>
           </div>
           <div class="space-top">
-            <div class="user center">
+            <div class="user center-text">
               SADDEST
             </div>
             <div class="icon-mask">
               <img class="icon-resize" src="<%= popularPeople.sad.img || 'http://style.anu.edu.au/_anu/4/images/placeholders/person.png' %>"></img>
             </div>
-            <div class="center">
+            <div class="center-text">
               <%= popularPeople.sad.name %>
             </div>
           </div>
         </div>
         <div class="icon-row">
           <div class="space-top">
-            <div class="user center">
+            <div class="user center-text">
               EARLY BIRD
             </div>
             <div class="icon-mask">
               <img class="icon-resize" src="<%= extremeTimePeople.earlyBird.img || 'http://style.anu.edu.au/_anu/4/images/placeholders/person.png' %>"></img>
             </div>
-            <div class="center">
+            <div class="center-text">
               <%= extremeTimePeople.earlyBird.name || 'None' %>
             </div>
           </div>
           <div class="space-top">
-            <div class="user center">
+            <div class="user center-text">
               NIGHT OWL
             </div>
             <div class="icon-mask">
               <img class="icon-resize" src="<%= extremeTimePeople.nightOwl.img || 'http://style.anu.edu.au/_anu/4/images/placeholders/person.png' %>"></img>
             </div>
-            <div class="center">
+            <div class="center-text">
               <%= extremeTimePeople.nightOwl.name || 'None' %>
             </div>
           </div>
@@ -169,7 +169,7 @@
         <% if (favorited.msg) { %>
           <div class="icon-row">
             <div class = "space-top">
-              <div class="user center">
+              <div class="user center-text">
                 MOST LIKED RECENT COMMENT
               </div>
               <p class="triangle-isosceles"><%= favorited.msg.text %></p>
@@ -182,7 +182,7 @@
           </div>
         <% } %>
       </div>
-      <div id="graphs" class="flex-column" style="justify-content: center">
+      <div id="graphs" class="flex-column center vcenter">
         <div id="pieChart" class="space-top" style="margin-bottom: 150px"></div>
       </div>
     </div>
