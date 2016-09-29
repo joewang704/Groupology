@@ -65,7 +65,7 @@ exports.plotDensity = function(messages) {
   })
   var sortedMap = []
   countList.forEach(function (value, i) {
-      sortedMap.push({'label': namesList[i], 'value':i})
+      sortedMap.push({'label': namesList[i], 'value':countList[i]})
   })
 
   //initialize

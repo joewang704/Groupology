@@ -55,6 +55,13 @@ var layer = svg.selectAll(".stack")
             return color(i);
         });
 
+var tooltip = d3.tip()
+    .attr('class', 'd3-tip')
+    .offset([-10, 0])
+    .html(function(d) {
+      return "<strong>" + d.q + "</strong> <span style='color:red'>" + Math.floor((100.0 * d.y)/d.f)  + "%</span>";
+    })
+svg.call(tooltip)
 layer.selectAll("rect")
         .data(function (d) {
             return d;
@@ -70,11 +77,8 @@ layer.selectAll("rect")
             return y(d.y0) - y(d.y + d.y0);
         })
         .attr("width", x.rangeBand())
-			.on("mouseover", function(d, i){return tooltip.style("visibility", "visible").text(d.q + " " + Math.floor((100.0 * d.y)/d.f) + "%");})
-			.on("mousemove", function(d){return tooltip.style("top", (event.pageY-10)+"px").style("left",(event.pageX+10)+"px").text(d.q + " " + Math.floor((100.0 * d.y)/d.f) + "%");})
-			.on("mouseout", function(d){return tooltip.style("visibility", "hidden");})
-
-
+        .on('mouseover', tooltip.show)
+        .on('mouseout', tooltip.hide)
 
 svg.append("g")
         .attr("class", "axis")
@@ -87,13 +91,6 @@ svg.append("g")
         .attr("transform", "rotate(80)")
         .style("text-anchor", "start")
 
-var tooltip = d3.select("body")
-			.append("div")
-			.style("position", "absolute")
-			.style("font-family", "'Open Sans', sans-serif")
-			.style("font-size", "12px")
-			.style("z-index", "10")
-			.style("visibility", "hidden");
 svg.append("text")
 	.attr("x", (width / 2))
 	.attr("y", 0)
