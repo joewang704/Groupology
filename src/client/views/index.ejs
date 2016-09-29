@@ -53,8 +53,7 @@
                 MOST TALKATIVE
               </div>
               <div class="icon-mask">
-                <img class="icon-resize"
-                     src="<%= participants.reduce(function(prev, curr) { return curr.count > prev.count ? curr : prev }, { count: -1 }).image_url %>"></img>
+                <img src="<%= participants.reduce(function(prev, curr) { return curr.count > prev.count ? curr : prev }, { count: -1 }).image_url %>"></img>
               </div>
               <div class="center-text">
                 <%= participants.reduce(function(prev, curr) { return curr.count > prev.count ? curr : prev }, { count: -1 }).nickname %>
@@ -65,7 +64,7 @@
               MOST POPULAR
             </div>
             <div class="icon-mask">
-              <img class="icon-resize" src="<%= popularPeople.popular.img %>"></img>
+              <img src="<%= popularPeople.popular.img %>"></img>
             </div>
             <div class="center-text">
               <%= popularPeople.popular.name %>
@@ -100,7 +99,7 @@
                 MOST LIKED
               </div>
               <div class="icon-mask">
-                <img class="icon-resize" src="<%= popularPeople.liked.img || 'http://style.anu.edu.au/_anu/4/images/placeholders/person.png' %>"></img>
+                <img src="<%= popularPeople.liked.img || 'http://style.anu.edu.au/_anu/4/images/placeholders/person.png' %>"></img>
               </div>
               <div class="center-text">
                 <%= popularPeople.liked.name %>
@@ -111,7 +110,7 @@
                 MOST BULLIED
               </div>
               <div class="icon-mask">
-                <img class="icon-resize" src="<%= popularPeople.hated.img || 'http://style.anu.edu.au/_anu/4/images/placeholders/person.png' %>"></img>
+                <img src="<%= popularPeople.hated.img || 'http://style.anu.edu.au/_anu/4/images/placeholders/person.png' %>"></img>
               </div>
               <div class="center-text">
                 <%= popularPeople.hated.name %>
@@ -124,7 +123,7 @@
               HAPPIEST
             </div>
             <div class="icon-mask">
-              <img class="icon-resize" src="<%= popularPeople.happy.img || 'http://style.anu.edu.au/_anu/4/images/placeholders/person.png' %>"></img>
+              <img src="<%= popularPeople.happy.img || 'http://style.anu.edu.au/_anu/4/images/placeholders/person.png' %>"></img>
             </div>
             <div class="center-text">
               <%= popularPeople.happy.name %>
@@ -135,7 +134,7 @@
               SADDEST
             </div>
             <div class="icon-mask">
-              <img class="icon-resize" src="<%= popularPeople.sad.img || 'http://style.anu.edu.au/_anu/4/images/placeholders/person.png' %>"></img>
+              <img src="<%= popularPeople.sad.img || 'http://style.anu.edu.au/_anu/4/images/placeholders/person.png' %>"></img>
             </div>
             <div class="center-text">
               <%= popularPeople.sad.name %>
@@ -148,7 +147,7 @@
               EARLY BIRD
             </div>
             <div class="icon-mask">
-              <img class="icon-resize" src="<%= extremeTimePeople.earlyBird.img || 'http://style.anu.edu.au/_anu/4/images/placeholders/person.png' %>"></img>
+              <img src="<%= extremeTimePeople.earlyBird.img || 'http://style.anu.edu.au/_anu/4/images/placeholders/person.png' %>"></img>
             </div>
             <div class="center-text">
               <%= extremeTimePeople.earlyBird.name || 'None' %>
@@ -159,7 +158,7 @@
               NIGHT OWL
             </div>
             <div class="icon-mask">
-              <img class="icon-resize" src="<%= extremeTimePeople.nightOwl.img || 'http://style.anu.edu.au/_anu/4/images/placeholders/person.png' %>"></img>
+              <img src="<%= extremeTimePeople.nightOwl.img || 'http://style.anu.edu.au/_anu/4/images/placeholders/person.png' %>"></img>
             </div>
             <div class="center-text">
               <%= extremeTimePeople.nightOwl.name || 'None' %>
@@ -201,7 +200,6 @@
 	</script>
   <script>
     $(document).ready(function() {
-      modifyImages()
       var participants = <%- JSON.stringify(participants) %>
       var density = <%- JSON.stringify(density) %>
       change(Object.keys(participants).reduce(function(acc, key) {
@@ -216,16 +214,18 @@
       changeHist(density)
     })
 
+    $(window).on('load', function() {
+      modifyImages()
+    })
+
     function modifyImages() {
       $('img').each(function() {
-        $(this).on('load', function() {
-          var img = $(this)
-          if (img.get(0).naturalWidth > img.get(0).naturalHeight) {
-            img.attr('class', 'icon-resize-wide')
-          } else {
-            img.attr('class', 'icon-resize-tall')
-          }
-        })
+        var img = $(this)
+        if (img.get(0).naturalWidth > img.get(0).naturalHeight) {
+          img.attr('class', 'icon-resize-wide')
+        } else {
+          img.attr('class', 'icon-resize-tall')
+        }
       })
     }
   </script>

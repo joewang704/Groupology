@@ -47,7 +47,7 @@ body {
 
 .icon-resize-tall {
   position: absolute;
-  width: 160px;
+  width: 150px;
   top: 0;
   bottom: 0;
   margin: auto;
@@ -56,7 +56,7 @@ body {
 
 .icon-resize-wide {
   position: absolute;
-  height: 160px;
+  height: 150px;
   top: 0;
   bottom: 0;
   margin: auto;
