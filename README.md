@@ -19,3 +19,5 @@
 - [x] Handle edge case of group with no chats yet
 - [ ] Resizing problems on mobile
 - [ ] If most liked recent message is an image, will show empty text field
+- [ ] Same tooltip for the bar graph as the pie chart.
+
