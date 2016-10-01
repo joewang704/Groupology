@@ -150,7 +150,6 @@ polyline{
   margin-bottom: 5px;
   background-color: white;
   border: 1px solid gray;
-  border-radius: 10px;
   box-shadow: 0px 2px 5px rgba(0,0,0,.2);
 }
 
@@ -159,10 +158,27 @@ polyline{
   color: white;
 }
 
+.group span {
+  float: right;
+  color: gray;
+}
+
+
 #topbar {
   color: white;
   background-color: dodgerblue;
   width: 100%;
   box-shadow: 0px 3px 5px rgba(0,0,0,.2);
   margin-bottom: 10px;
+}
+
+
+#content {
+  display: block;
+  width: 50%;
+  margin: auto;
+}
+
+.half {
+  color: gray;
 }

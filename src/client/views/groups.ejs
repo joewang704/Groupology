@@ -23,10 +23,10 @@
             console.log(group); 
             if (group.messages.last_message_created_at > 0) {
       %>
-        <div class="group" style="cursor: pointer" onClick="accessGroup(<%=group.id%>)" ><%=group.name%></div>
+        <div class="group" style="cursor: pointer" onClick="accessGroup(<%=group.id%>)" ><%=group.name%><span><%=group.members.length%> members</span></div>
       <% }}) %>
     </div>
-    <div class="flex-column vcenter center">*Groups with no messages will not be shown.</div>
+    <div class="half flex-column vcenter center">*Groups with no messages will not be shown.</div>
   </div>
   <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
   <script src="/static/js/groups.js"></script>
