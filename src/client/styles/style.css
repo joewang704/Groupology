@@ -153,15 +153,17 @@ polyline{
   box-shadow: 0px 2px 5px rgba(0,0,0,.2);
 }
 
+.group span {
+  float: right;
+  color: gray;
+}
+
 .group:hover {
   background-color:dodgerblue;
   color: white;
 }
 
-.group span {
-  float: right;
-  color: gray;
-}
+
 
 
 #topbar {
